@@ -1,0 +1,163 @@
+Program.Sub.ScreenSU.Start
+Gui.Form..Create
+Gui.Form..Caption("Sugar CRM Integration Maintenance")
+Gui.Form..Size(8235,5520)
+Gui.Form..MinX(0)
+Gui.Form..MinY(0)
+Gui.Form..Position(0,0)
+Gui.Form..BackColor(-2147483633)
+Gui.Form..MousePointer(0)
+Gui.Form..Event(UnLoad,Form_UnLoad)
+Gui.Form.lbl1.Create(Label,"Instance Running",True,1635,255,0,150,270,True,0,"Arial",8,-2147483633,0)
+Gui.Form.gsRunning.Create(GsGridControl)
+Gui.Form.gsRunning.Size(7845,3945)
+Gui.Form.gsRunning.Position(165,510)
+Gui.Form.cmdForceEnd.Create(Button)
+Gui.Form.cmdForceEnd.Size(1155,375)
+Gui.Form.cmdForceEnd.Position(1185,4560)
+Gui.Form.cmdForceEnd.Caption("Force End")
+Gui.Form.cmdForceEnd.Event(Click,cmdForceEnd_Click)
+Gui.Form.cmdRefresh.Create(Button)
+Gui.Form.cmdRefresh.Size(855,375)
+Gui.Form.cmdRefresh.Position(7155,75)
+Gui.Form.cmdRefresh.Caption("Refresh")
+Gui.Form.cmdRefresh.Event(Click,cmdRefresh_Click)
+Gui.Form.cmdTellEnd.Create(Button)
+Gui.Form.cmdTellEnd.Size(870,375)
+Gui.Form.cmdTellEnd.Position(195,4560)
+Gui.Form.cmdTellEnd.Caption("Tell End")
+Gui.Form.cmdTellEnd.Event(Click,cmdTellEnd_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.bInGroup.Declare
+	v.Local.sMsg.Declare
+	
+	'Check Security Group
+	f.Global.Security.IsInGroup(v.Caller.User,"SUGARMTN",V.Caller.CompanyCode,V.Local.bInGroup)
+	v.Local.bInGroup.Set(True)
+	F.Intrinsic.Control.If(V.Local.bInGroup.Not)
+		F.Intrinsic.String.Build("User is not in Security Group",v.Caller.User,v.Local.sMsg)
+		F.Intrinsic.UI.Msgbox(V.Local.sMsg,"Attention")
+		f.Intrinsic.Control.CallSub("Unload")
+	F.Intrinsic.Control.EndIf
+	
+	f.ODBC.Connection!conx.OpenCompanyConnection(1000)
+	f.Data.DataTable.CreateFromSQL("Running","conx","Select UserID,Terminal, StartAt from GCG_5625_Running where IsRunning = 1",True)
+	gui.Form.gsRunning.AddGridviewFromDatatable("GVMain","Running")
+	gui.Form.gsRunning.MainView("GVMain")
+	gui.Form..Show	
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.UI.Msgbox(v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.UnLoad.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+
+	F.Intrinsic.Control.If(V.ODBC.conx.State,=,1)
+		F.ODBC.Connection!conx.close
+	F.Intrinsic.Control.EndIf
+	
+	f.Intrinsic.Control.End
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.End	
+F.Intrinsic.Control.EndTry
+Program.Sub.UnLoad.End
+
+Program.Sub.Form_UnLoad.Start
+f.Intrinsic.Control.CallSub("Unload")
+Program.Sub.Form_UnLoad.End
+
+Program.Sub.cmdRefresh_Click.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	
+	f.Intrinsic.UI.InvokeWaitDialog("Refreshing...")
+	f.Intrinsic.Control.If(v.DataTable.Running.Exists)
+		f.Data.DataTable.Close("Running")
+	f.Intrinsic.Control.EndIf
+	f.Data.DataTable.CreateFromSQL("Running","conx","Select UserID,Terminal, StartAt from GCG_5625_Running where IsRunning = 1",True)
+	gui.Form.gsRunning.AddGridviewFromDatatable("GVMain","Running")
+	gui.Form.gsRunning.MainView("GVMain")
+	f.Intrinsic.UI.CloseWaitDialog
+	gui.Form..Show	
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.UI.Msgbox(v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdRefresh_Click.End
+
+Program.Sub.cmdForceEnd_Click.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.iCnt.Declare
+	v.Local.sSQL.Declare
+	v.Local.bTerminal.Declare
+	v.Local.sRet.Declare
+	
+	f.Intrinsic.UI.InvokeWaitDialog("Force to end the current instance...")
+	
+	f.Intrinsic.Control.For(v.Local.iCnt,0,v.DataTable.Running.RowCount--,1)
+		f.Intrinsic.String.Build("Update GCG_5625_Running set IsRunning = 0, ForceEndAt = '{0}', EndUserID = '{1}', EndTerminal = '{2}' where UserID = '{3}' and Terminal = '{4}' and StartAt = '{5}'",v.Ambient.Now, v.Caller.User,v.Caller.Terminal,v.DataTable.Running(v.Local.iCnt).UserID!FieldValString,v.DataTable.Running(v.Local.iCnt).Terminal!FieldValString,v.DataTable.Running(v.Local.iCnt).StartAt!FieldValString,v.Local.sSQL)
+		f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+	f.Intrinsic.Control.CallSub("cmdRefresh_Click")
+	
+	f.Intrinsic.UI.CloseWaitDialog
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.UI.Msgbox(v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+
+Program.Sub.cmdForceEnd_Click.End
+
+Program.Sub.cmdTellEnd_Click.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.iCnt.Declare
+	v.Local.sSQL.Declare
+	v.Local.bTerminal.Declare
+	v.Local.sRet.Declare
+	
+	f.Intrinsic.UI.InvokeWaitDialog("Tell to end the current instance...")
+	
+	f.Intrinsic.Control.For(v.Local.iCnt,0,v.DataTable.Running.RowCount--,1)
+		f.Intrinsic.String.Build("Update GCG_5625_Running set TellEndAt = '{0}', EndUserID = '{1}', EndTerminal = '{2}' where UserID = '{3}' and Terminal = '{4}' and StartAt = '{5}'",v.Ambient.Now, v.Caller.User,v.Caller.Terminal,v.DataTable.Running(v.Local.iCnt).UserID!FieldValString,v.DataTable.Running(v.Local.iCnt).Terminal!FieldValString,v.DataTable.Running(v.Local.iCnt).StartAt!FieldValString,v.Local.sSQL)
+		f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+		v.Local.bTerminal.Set(False)
+		f.Intrinsic.Control.DoUntil(v.Local.bTerminal)
+			f.Intrinsic.UI.Sleep(10)
+			f.Intrinsic.String.Build("Select * from GCG_5625_Running where UserID = '{0}' and Terminal = '{1}' and IsRunning = 0",v.DataTable.Running(v.Local.iCnt).UserID!FieldValString,v.DataTable.Running(v.Local.iCnt).Terminal!FieldValString,v.Local.sSQL)
+			f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+			f.Intrinsic.Control.If(v.Local.sRet,<>,"")
+				v.Local.bTerminal.Set(True)
+			f.Intrinsic.Control.EndIf			
+		f.Intrinsic.Control.Loop
+	f.Intrinsic.Control.Next(v.Local.iCnt)
+	
+	f.Intrinsic.Control.CallSub("cmdRefresh_Click")
+	
+	f.Intrinsic.UI.CloseWaitDialog
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.UI.Msgbox(v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdTellEnd_Click.End
+
+
