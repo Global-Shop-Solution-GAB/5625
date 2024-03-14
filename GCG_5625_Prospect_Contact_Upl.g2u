@@ -1,0 +1,1641 @@
+Program.Sub.ScreenSU.Start
+Gui.Form..Create
+Gui.Form..Caption("Prospect/Contact Upload Log")
+Gui.Form..Size(12465,9690)
+Gui.Form..MinX(0)
+Gui.Form..MinY(0)
+Gui.Form..Position(0,0)
+Gui.Form..BackColor(-2147483633)
+Gui.Form..MousePointer(0)
+Gui.Form..Event(UnLoad,Form_UnLoad)
+Gui.Form.txtLog.Create(TextBoxR)
+Gui.Form.txtLog.Size(12150,7575)
+Gui.Form.txtLog.Position(105,1170)
+Gui.Form.cmdEnd.Create(Button)
+Gui.Form.cmdEnd.Size(1440,375)
+Gui.Form.cmdEnd.Position(105,8820)
+Gui.Form.cmdEnd.Caption("End Next Cycle")
+Gui.Form.cmdEnd.Event(Click,cmdEnd_Click)
+Gui.Form.cmdEnd.DisableOnClick(10)
+Gui.Form.txtCycle.Create(TextBox,"10",True,690,300,0,1365,150,True,1,"Arial",8,-2147483643,1)
+Gui.Form.txtCycle.NumericOnly(2)
+Gui.Form.txtCycle.Event(LostFocus,txtCycle_LostFocus)
+Gui.Form.txtCycle.Event(KeyPressEnter,txtCycle_KeyPressEnter)
+Gui.Form.lbl1.Create(Label,"Seconds/Cycle",True,1245,255,0,120,225,True,0,"Arial",8,-2147483633,0)
+Gui.Form.lblSleep.Create(Label,"lbl",True,8895,255,0,120,900,True,0,"Arial",8,-2147483633,0)
+Gui.Form.lbl2.Create(Label,"Current Cycle",True,1185,255,0,120,585,True,0,"Arial",8,-2147483633,0)
+Gui.Form.lblAtCycle.Create(Label,"",True,675,255,0,1365,585,True,1,"Arial",8,9157775,1)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.s6014Mode.Declare(String,"50")
+v.Local.sSpaces.Declare
+
+F.Data.DataTable.Create("6014",True)
+f.Intrinsic.String.RPad(""," ",6,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ProspNum","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",30,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","BillName","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","BillAddress1","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","BillAddress2","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","BillAddress3","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","BillAddress4","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","BillAddress5","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",15,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","BillCity","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",3,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","BillState","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",13,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","BillZip","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",12,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","BillCountry","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","BillCounty","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",30,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","BillAttention","String",v.Local.sSpaces)
+
+F.Data.DataTable.AddColumn("6014","BillIntlAddress","String","N")
+
+f.Intrinsic.String.RPad(""," ",7,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","Filler1","String",v.local.sSpaces)
+
+'Phone number with no Dash No Dashes
+f.Intrinsic.String.RPad(""," ",13,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","PhoneNum","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",7,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","Filler2","String",v.local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",13,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","FaxNum","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",30,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipName","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipAddress1","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipAddress2","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipAddress3","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipAddress4","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipAddress5","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",15,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipCity","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",2,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipState","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",13,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipZip","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",12,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipCountry","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipCounty","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",30,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipAttention","String",v.Local.sSpaces)
+
+F.Data.DataTable.AddColumn("6014","ShipIntlAddress","String"," ")
+
+f.Intrinsic.String.RPad(""," ",7,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","Filler3","String",v.local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",13,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipPhone","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",7,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","Filler4","String",v.local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",13,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipFax","String",v.Local.sSpaces)
+'''''''''''''''''''''''''''
+
+f.Intrinsic.String.RPad(""," ",43,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","Email","String",v.Local.sSpaces)
+
+F.Data.DataTable.AddColumn("6014","ProspectSuspect","String","0")
+
+f.Intrinsic.String.RPad(""," ",120,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","URL","String",v.Local.sSpaces) 
+
+f.Intrinsic.String.RPad(""," ",100,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","Filler5","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",6,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","NewCustID","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",4,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","SICCode","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",1,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TermCode","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",30,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","AlphaSort","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",2,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TerritoryBranch","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","Area","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",3,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","Salesman","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",15,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","NormalGLAcct","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",1,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipVia","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipCollect","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",10,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipFreightZone","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",2,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ShipGeoCode","String",v.Local.sSpaces)
+
+F.Data.DataTable.AddColumn("6014","DefaultCurrency","String","USD")
+
+F.Data.DataTable.AddColumn("6014","CatalogCurrency","String","USD")
+
+f.Intrinsic.String.RPad(""," ",2,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","PriceCategory","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",6,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","QuoteReportID","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",1,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","SingleGrpQuoteFlag","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",3,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","LanguageCode","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",16,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ConfigDiscPct","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",12,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ExternalID","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",6,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","CarrierCode","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",3,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","ServiceType","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",91,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","Filler6","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",3,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxCode1","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxCode2","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxCode3","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxCode4","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",2,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxState","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",13,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxZip","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",3,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxCode5","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxCode6","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxCode7","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxCode8","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxCode9","String",v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxCode10","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",20,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","SalesTaxExempt","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",2,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","TaxGeoCode","String",v.Local.sSpaces)
+
+f.Intrinsic.String.RPad(""," ",98,v.Local.sSpaces)
+F.Data.DataTable.AddColumn("6014","Filler7","String",v.Local.sSpaces)
+
+v.Global.sTransactionLog.Declare
+v.Global.iCycle.Declare
+v.Global.sCaller.Declare
+v.Global.dStartAt.Declare
+v.Global.dStartAt.Set(v.Ambient.Now)
+f.Intrinsic.String.UCase(v.Caller.Caller,v.Global.sCaller)
+
+v.Global.sTimeStartCallWrapper.Declare
+v.Global.sDateStartCallWrapper.Declare
+
+f.Intrinsic.Control.CallSub("Check_And_Create_Custom_Folder")
+f.Intrinsic.String.Build("{0}\Custom\5625\{1}\Transaction Log\{2}_{3}.txt",v.Caller.GlobalDir,v.Caller.CompanyCode,v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.Global.sTransactionLog)
+
+
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'BN, July 29, 2019
+'Customer: PS Industries
+'Sugar Integeration
+'This project will allow Sugar CRM to push data to the custom table GCG_5625_Prospect_Upload and GCG_5625_Contact_Upl using SOAP. This GAB program will upload new or update existing prospect/contact from the custom table.
+'Once the prospect is converted to customer in GSS, Sugar CRM will no longer modify/update the information of the customer.
+'However, Contacts can be created/updated even when the prospect is converted to a customer
+
+'Program will write error log file if it occurs to Global\Custom\5625\XXX\GAB Error Log and transaction log file in Global\Custom\5625\XXX\Transaction Log
+'There must be only 1 instance of the project running in the system. Therefore, the program must be launched under SUPERVSR account.
+'It will be in Task Scheduler running Daily from a specified time and will be unloaded at 11:45 pm
+
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.sNow.Declare
+	v.Local.iMinuteUnload.Declare
+	v.Local.sHold.Declare
+	v.Local.sRet.Declare
+	v.Local.sMsg.Declare
+	v.Local.sSQL.Declare
+	v.Local.bInGroup.Declare
+	v.Local.sForcedOrTold.Declare
+
+	f.ODBC.Connection!conx.OpenCompanyConnection(1000)
+	
+	f.Intrinsic.Control.CallSub("Create_NewContactUpl")
+	
+	'Create a group that has ONLINE and users that has authority to run this program
+	f.Global.Security.IsInGroup(v.Caller.User,"SUGARUPL",V.Caller.CompanyCode,V.Local.bInGroup)
+	v.Local.bInGroup.Set(True)
+	f.Intrinsic.Control.If(v.Caller.User,=,"ONLINE",OR,V.Caller.User,=,"PSD")
+		V.Local.bInGroup.Set(True)
+	f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.If(v.Local.bInGroup.Not)
+		f.Intrinsic.String.Build("User {0} is not in Security Group",v.Caller.User,v.Local.sMsg)
+		f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sMsg)
+		f.Intrinsic.Control.CallSub("Unload")
+	f.Intrinsic.Control.EndIf
+	
+	'Check if there is any instance running
+	f.ODBC.Connection!conx.ExecuteAndReturn("Select Top 1 UserID,Terminal from GCG_5625_Running where IsRunning = 1",v.Local.sRet)
+	f.Intrinsic.Control.If(v.Local.sRet,<>,"")
+		f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+		f.Intrinsic.String.Build("The program can not be launched because other Instance is running: User {0}, Terminal {1}.",v.Local.sRet(0),v.Local.sRet(1),v.Local.sMsg)
+		f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sMsg)
+	 	f.Intrinsic.Control.CallSub("Unload")	 	
+	f.Intrinsic.Control.EndIf
+	
+	'Tell that I am running now
+	f.Intrinsic.String.Build("Insert into GCG_5625_Running (UserID,Terminal,StartAt,IsRunning) values ('{0}','{1}','{2}',1)",v.Caller.User,v.Caller.Terminal,v.Global.dStartAt,v.Local.sSQL)
+	f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+	
+	'Anchor 0 - None		1 - Top			2 - Bottom		4 - Left		8 - Right		
+	gui.Form.txtLog.Anchor(15)
+	gui.Form.cmdEnd.Anchor(6)
+	gui.Form..Show
+	
+	F.Intrinsic.Control.Do			
+		'Check the time and see if it is past 11:45 pm
+		f.Intrinsic.String.Format(v.Ambient.Now,"HHMMSS",v.Local.sNow)
+		v.Local.iMinuteUnload.Set(v.Local.sNow.left4)
+		f.Intrinsic.Control.If(v.Local.iMinuteUnload,>=,2345)
+			f.Intrinsic.Control.CallSub("Unload")
+		F.Intrinsic.Control.Else
+			'Check if I am forced/told to unload by the Maintenance program
+			f.Intrinsic.String.Build("Select Top 1 EndUserID,EndTerminal,ForceEndAt,TellEndAt from GCG_5625_Running where UserID = '{0}' and Terminal = '{1}' and StartAt = '{2}' and EndUserID <> '' and EndTerminal <> ''",v.Caller.User,v.Caller.Terminal,v.Global.dStartAt,v.Local.sSQL)
+			f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+			f.Intrinsic.Control.If(v.Local.sRet,<>,"")
+				f.Intrinsic.String.Build("Update GCG_5625_Running set IsRunning = 0, EndAt = '{2}' where UserID = '{0}' and Terminal = '{1}' and StartAt = '{3}'",v.Caller.User,v.Caller.Terminal,v.Ambient.Now,v.Global.dStartAt,v.Local.sSQL)
+				f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+				f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+				f.Intrinsic.Control.If(v.Local.sRet(2).Trim,<>,"")
+					v.Local.sForcedOrTold.Set("forced")
+				f.Intrinsic.Control.Else
+					v.Local.sForcedOrTold.Set("told")
+				f.Intrinsic.Control.EndIf
+				f.Intrinsic.String.Build("The program was {0} to unload by User {1}, Terminal {2}.",v.Local.sForcedOrTold,v.Local.sRet(0),v.Local.sRet(1),v.Local.sMsg)
+				f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sMsg)					
+	 			f.Intrinsic.Control.CallSub("Unload")				
+			f.Intrinsic.Control.EndIf		
+		
+			gui.Form.lblSleep.Caption("")
+			f.Intrinsic.Math.Add(v.Global.iCycle,1,v.Global.iCycle)
+			'Process Prospect
+			f.Intrinsic.Control.CallSub("Prospect_Process")
+			'Process Contact
+			f.Intrinsic.Control.CallSub("Process_Contact")
+			'Sleep x seconds
+			f.Intrinsic.String.Build("Sleep {0} seconds...",v.Screen.Form!txtCycle.Text.Trim,v.Local.sHold)
+			gui.Form.lblSleep.Caption(v.Local.sHold)	
+			'Write Transactions to log file after each cycle
+			f.Intrinsic.File.String2File(v.Global.sTransactionLog,v.Screen.Form!txtLog.Text)			
+			F.Intrinsic.UI.Sleep(v.Screen.Form!txtCycle.Text.Trim)			
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Loop
+		
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.Control.If(v.Global.sCaller,=,"GSSMENU.EXE",or,v.Global.sCaller,=,"GABCE.EXE")
+		f.Intrinsic.UI.Msgbox(v.Local.sError)
+	f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.Check_And_Create_Custom_Folder.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.bExist.Declare
+	v.Local.sFile.Declare
+	v.Local.sDir.Declare
+	
+	f.Intrinsic.String.Build("{0}\Custom",v.Caller.GlobalDir,v.Local.sDir)
+	f.Intrinsic.File.DirExists(v.Local.sDir,v.Local.bExist)
+	f.Intrinsic.Control.If(v.Local.bExist.Not)
+		f.Intrinsic.File.CreateDir(v.Local.sDir)
+	f.Intrinsic.Control.EndIf
+	
+	f.Intrinsic.String.Build("{0}\Custom\5625",v.Caller.GlobalDir,v.Local.sDir)
+	f.Intrinsic.File.DirExists(v.Local.sDir,v.Local.bExist)
+	f.Intrinsic.Control.If(v.Local.bExist.Not)
+		f.Intrinsic.File.CreateDir(v.Local.sDir)
+	f.Intrinsic.Control.EndIf
+	
+	f.Intrinsic.String.Build("{0}\Custom\5625\{1}",v.Caller.GlobalDir,v.Caller.CompanyCode,v.Local.sDir)
+	f.Intrinsic.File.DirExists(v.Local.sDir,v.Local.bExist)
+	f.Intrinsic.Control.If(v.Local.bExist.Not)
+		f.Intrinsic.File.CreateDir(v.Local.sDir)
+	f.Intrinsic.Control.EndIf	
+	
+	f.Intrinsic.String.Build("{0}\Custom\5625\{1}\Transaction Log",v.Caller.GlobalDir,v.Caller.CompanyCode,v.Local.sDir)
+	f.Intrinsic.File.DirExists(v.Local.sDir,v.Local.bExist)
+	f.Intrinsic.Control.If(v.Local.bExist.Not)
+		f.Intrinsic.File.CreateDir(v.Local.sDir)
+	f.Intrinsic.Control.EndIf	
+	
+	f.Intrinsic.String.Build("{0}\Custom\5625\{1}\GAB Error Log",v.Caller.GlobalDir,v.Caller.CompanyCode,v.Local.sDir)
+	f.Intrinsic.File.DirExists(v.Local.sDir,v.Local.bExist)
+	f.Intrinsic.Control.If(v.Local.bExist.Not)
+		f.Intrinsic.File.CreateDir(v.Local.sDir)
+	f.Intrinsic.Control.EndIf		
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry	
+Program.Sub.Check_And_Create_Custom_Folder.End
+
+Program.Sub.UnLoad.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.sSQL.Declare
+	
+	'Write Transaction Log before unloading
+	f.Intrinsic.File.String2File(v.Global.sTransactionLog,v.Screen.Form!txtLog.Text)
+	'Tell that I ended myself
+	f.Intrinsic.String.Build("Update GCG_5625_Running set IsRunning = 0, EndAt = '{2}' where UserID = '{0}' and Terminal = '{1}' and StartAt = '{3}'",v.Caller.User,v.Caller.Terminal,v.Ambient.Now,v.Global.dStartAt,v.Local.sSQL)
+	f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+	'Close connection
+	F.Intrinsic.Control.If(V.ODBC.conx.State,=,1)
+		F.ODBC.Connection!conx.close
+	F.Intrinsic.Control.EndIf
+	'End
+	f.Intrinsic.Control.End
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.End	
+F.Intrinsic.Control.EndTry
+Program.Sub.UnLoad.End
+
+Program.Sub.cmdEnd_Click.Start
+f.Intrinsic.Control.CallSub("Unload")
+Program.Sub.cmdEnd_Click.End
+
+Program.Sub.Form_UnLoad.Start
+f.Intrinsic.Control.CallSub("Unload")
+Program.Sub.Form_UnLoad.End
+
+Program.Sub.txtCycle_LostFocus.Start
+F.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.iCycle.Declare
+	
+	v.Local.iCycle.Set(v.Screen.Form!txtCycle.Text.Trim)
+	
+	f.Intrinsic.Control.If(v.Local.iCycle,>,60)
+		gui.Form.txtCycle.Text(60)
+	f.Intrinsic.Control.Elseif(v.Local.iCycle,<,10)
+		gui.Form.txtCycle.Text(10)
+	f.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.txtCycle_LostFocus.End
+
+Program.Sub.txtCycle_KeyPressEnter.Start
+f.Intrinsic.Control.CallSub("txtCycle_LostFocus")
+Program.Sub.txtCycle_KeyPressEnter.End
+
+Program.Sub.Append_Transaction_Log.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.sNewContent.Declare
+	
+	f.Intrinsic.String.Build("{0} : {1}{2}{3}",v.Ambient.Now,v.Args.sNewLineTopAdded,v.Ambient.NewLine,v.Screen.Form!txtLog.Text,v.Local.sNewContent)
+	gui.Form.txtLog.Text(v.Local.sNewContent)	
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.Append_Transaction_Log.End
+
+Program.Sub.Write_GAB_Error_Log.Start
+'Parameters: sError
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.sFile.Declare
+	v.Local.sContent.Declare
+	
+	f.Intrinsic.Control.If(v.Global.sCaller,=,"GSSMENU.EXE",or,v.Global.sCaller,=,"GABCE.EXE")
+		f.Intrinsic.UI.Msgbox(v.Args.sError)
+	f.Intrinsic.Control.EndIf
+	
+	'Write error log file
+	f.Intrinsic.String.Build("User: {1}{0}Terminal: {2}{0}",v.Ambient.NewLine,v.Caller.User,v.Caller.Terminal,v.Local.sContent)
+	f.Intrinsic.String.Build("{0}{1}{2}{3}",v.Local.sContent,v.Ambient.Now,v.Ambient.NewLine,v.Args.sError,v.Local.sContent)
+	f.Intrinsic.String.Build("{0}\Custom\5625\{1}\GAB Error Log\{2}_{3}_{4}_{5}.txt",v.Caller.GlobalDir,v.Caller.CompanyCode,v.Caller.User,v.Caller.Terminal,v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.Local.sFile)
+	f.Intrinsic.File.String2File(v.Local.sFile,v.Local.sContent)
+	
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub("Unload")
+f.Intrinsic.Control.EndTry
+Program.Sub.Write_GAB_Error_Log.End
+
+Program.Sub.Prospect_Process.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.iCnt.Declare
+	v.Local.sSQL.Declare
+	V.Local.sRet.Declare
+	v.Local.sOp.Declare
+	v.Local.sNextProspectNumber.Declare
+	v.Local.sExistingCustomer.Declare
+	v.Local.sHold.Declare
+
+	v.Local.sExternalID.Declare
+	v.Local.sProspName.Declare
+	v.Local.sAddress1.Declare
+	v.Local.sAddress2.Declare
+	v.Local.sCity.Declare
+	v.Local.sState.Declare
+	v.Local.sZip.Declare
+	v.Local.sPhoneNum.Declare
+	
+	v.Local.sShipName.Declare
+	v.Local.sShipAddress1.Declare
+	v.Local.sShipAddress2.Declare
+	v.Local.sShipCity.Declare
+	v.Local.sShipState.Declare
+	v.Local.sShipZip.Declare
+	v.Local.sShipPhoneNum.Declare	
+	
+	v.Local.sWebAddress.Declare
+	v.Local.sSalesman.Declare	
+	v.Local.sEmail.Declare	
+	v.Local.sGSSCustProspReturned.Declare
+	
+	v.Local.bNumeric.Declare	
+	v.Local.iNextProspect.Declare
+	
+	'Get data that needs to be processed
+	f.Intrinsic.Control.If(v.DataTable.Inbound.Exists)
+		f.Data.DataTable.Close("Inbound")
+	f.Intrinsic.Control.EndIf
+	f.Data.DataTable.CreateFromSQL("Inbound","conx","Select AutoID,ExternalID,ProspName,Address1,Address2,City,State,Zip,PhoneNum,ShipName,ShipAddress1,ShipAddress2,ShipCity,ShipState,ShipZip, ShipPhoneNum,Email,WebAddress,Salesman,GSSCustProspReturned from GCG_5625_Prospect_Upload where Processed = 0 Order by datepushed",True)
+	f.Intrinsic.Control.If(v.DataTable.Inbound.RowCount,=,0)
+		gui.Form.lblAtCycle.Caption(v.Global.iCycle)
+		f.Intrinsic.Control.ExitSub
+	f.Intrinsic.Control.EndIf
+	
+	'Loop each record to be processed
+	f.Intrinsic.Control.For(v.Local.iCnt,0,v.DataTable.Inbound.RowCount--,1)
+
+		'Set Inbound Prospect data
+		v.Local.sExternalID.Set(v.DataTable.Inbound(v.Local.iCnt).ExternalID!FieldValTrim)
+		'Billing data
+		v.Local.sProspName.set(v.DataTable.Inbound(v.Local.iCnt).ProspName!FieldValTrim)
+		v.Local.sAddress1.set(v.DataTable.Inbound(v.Local.iCnt).Address1!FieldValTrim)
+		v.Local.sAddress2.set(v.DataTable.Inbound(v.Local.iCnt).Address2!FieldValTrim)
+		v.Local.sCity.set(v.DataTable.Inbound(v.Local.iCnt).City!FieldValTrim)
+		v.Local.sState.set(v.DataTable.Inbound(v.Local.iCnt).State!FieldValTrim)
+		v.Local.sZip.Set(v.DataTable.Inbound(v.Local.iCnt).Zip!FieldValTrim)
+		v.Local.sPhoneNum.set(v.DataTable.Inbound(v.Local.iCnt).PhoneNum!FieldValTrim)
+		'Ship data
+		v.Local.sShipName.set(v.DataTable.Inbound(v.Local.iCnt).ShipName!FieldValTrim)
+		v.Local.sShipAddress1.set(v.DataTable.Inbound(v.Local.iCnt).ShipAddress1!FieldValTrim)
+		v.Local.sShipAddress2.set(v.DataTable.Inbound(v.Local.iCnt).ShipAddress2!FieldValTrim)
+		v.Local.sShipCity.set(v.DataTable.Inbound(v.Local.iCnt).ShipCity!FieldValTrim)
+		v.Local.sShipState.set(v.DataTable.Inbound(v.Local.iCnt).ShipState!FieldValTrim)
+		v.Local.sShipZip.Set(v.DataTable.Inbound(v.Local.iCnt).ShipZip!FieldValTrim)
+		v.Local.sShipPhoneNum.set(v.DataTable.Inbound(v.Local.iCnt).ShipPhoneNum!FieldValTrim)		
+		
+		v.Local.sEmail.Set(v.DataTable.Inbound(v.Local.iCnt).Email!FieldValTrim)	
+		v.Local.sWebAddress.set(v.DataTable.Inbound(v.Local.iCnt).WebAddress!FieldValTrim)
+		v.Local.sSalesman.set(v.DataTable.Inbound(v.Local.iCnt).Salesman!FieldValTrim)
+		
+		v.Local.sGSSCustProspReturned.Set(v.DataTable.Inbound(v.Local.iCnt).GSSCustProspReturned!FieldValTrim)
+		'Validate Zip nunmeric
+		f.Intrinsic.Math.IsNumeric(v.Local.sZip,v.Local.bNumeric)
+		f.Intrinsic.Control.If(v.Local.bNumeric.Not)
+			v.Local.sZip.Set("")
+		f.Intrinsic.Control.EndIf
+		
+		'Validate ShipZip nunmeric
+		f.Intrinsic.Math.IsNumeric(v.Local.sShipZip,v.Local.bNumeric)
+		f.Intrinsic.Control.If(v.Local.bNumeric.Not)
+			v.Local.sShipZip.Set("")
+		f.Intrinsic.Control.EndIf		
+
+		'Validate PhoneNum nunmeric
+		f.Intrinsic.Math.IsNumeric(v.Local.sPhoneNum,v.Local.bNumeric)
+		f.Intrinsic.Control.If(v.Local.bNumeric.Not)
+			v.Local.sPhoneNum.Set("")
+		f.Intrinsic.Control.EndIf
+		
+		'Validate PhoneNum nunmeric
+		f.Intrinsic.Math.IsNumeric(v.Local.sShipPhoneNum,v.Local.bNumeric)
+		f.Intrinsic.Control.If(v.Local.bNumeric.Not)
+			v.Local.sShipPhoneNum.Set("")
+		f.Intrinsic.Control.EndIf		
+		
+		'BN, Apr 19 2020
+		'Check if Sugar dev says GSSCustProspReturned is what they know about the exsiting record (Prospect)in GSS
+		
+		'sGSSCustProspReturned is populated by Sugar dev
+		f.Intrinsic.Control.If(v.Local.sGSSCustProspReturned,<>,"")
+		
+			'Check if there is a prospect with that External ID
+			f.Intrinsic.String.Build("Select Prospect from v_Prospect_Master where Prospect = '{0}'",v.Local.sGSSCustProspReturned,v.Local.sSQL)
+			f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+			
+			'---CASE 1.1---No prospect exist
+			f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF)
+				'No prospect exist, check if customer exist
+				f.Intrinsic.String.Build("Select Customer from v_Customer_Master where Customer = '{0}'",v.Local.sGSSCustProspReturned,v.Local.sSQL)
+				f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+				f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF)
+					'---CASE 1.1.1-----
+					'No Customer Exist and No Prospect exist with prepopulated GSSCustProspReturned
+					'Update Custom DB
+					f.Intrinsic.String.Build("Update GCG_5625_Prospect_Upload set Processed = 1, Success = 'N', Reason = 'No Prospect/No Customer exists with GSSCustProspReturned prepopulated by Sugar Devs',TransactionTypeProcessed = 'E', CustomerProspect = 'C', DateUploaded = '{0}',TimeUploaded = '{1}' where AutoID = '{2}'",v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Inbound(v.Local.iCnt).AutoID!FieldValString,v.Local.sSQL)
+					f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+					'Display in log
+					f.Intrinsic.String.Build("AutoID {0} ... No Prospect/No Customer exists with GSS ID {1} given by Sugar Devs",v.DataTable.Inbound(v.Local.iCnt).AutoID!FieldValString,v.Local.sGSSCustProspReturned,v.Local.sHold)
+					f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)
+					'---END CASE 1.1.1---
+					
+				f.Intrinsic.Control.Else
+					'---CASE 1.1.2---
+					'Customer exist
+					'Update Custom DB
+					f.Intrinsic.String.Build("Update GCG_5625_Prospect_Upload set Processed = 1, Success = 'N', Reason = 'Customer exists with GSSCustProspReturned prepopulated by Sugar Devs',TransactionTypeProcessed = 'E', CustomerProspect = 'C', DateUploaded = '{0}',TimeUploaded = '{1}' where AutoID = '{2}'",v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Inbound(v.Local.iCnt).AutoID!FieldValString,v.Local.sSQL)
+					f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+					
+					'Display in log
+					f.Intrinsic.String.Build("AutoID {0} ... Customer exists with GSS ID {1} given by Sugar Devs",v.DataTable.Inbound(v.Local.iCnt).AutoID!FieldValString,v.Local.sGSSCustProspReturned,v.Local.sHold)
+					f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)		
+					'---END CASE 1.1.2---		
+					
+				f.Intrinsic.Control.EndIf
+			'---END CASE 1.1----	
+			
+			'There is Prospect equal to what given by Sugar Devs, go ahead and update the Prospect
+			f.Intrinsic.Control.Else
+				'---CASE 1.3---
+				f.Intrinsic.String.LPad(v.Local.sPhoneNum," ",20,v.Local.sPhoneNum)
+				f.Intrinsic.String.LPad(v.Local.sShipPhoneNum," ",20,v.Local.sShipPhoneNum)
+				f.Intrinsic.Control.CallSub("Update_Current_Prospect","sCurrentProspect",v.Local.sGSSCustProspReturned,"sProspectName",v.Local.sProspName,"sAddress1",v.Local.sAddress1,"sAddress2",v.Local.sAddress2,"sCity",v.Local.sCity,"sState",v.Local.sState,"sZip",v.Local.sZip,"sWebAddress",v.Local.sWebAddress,"sSalesman",v.Local.sSalesman,"sPhoneNum",v.Local.sPhoneNum,"sEmail",v.Local.sEmail,"iCnt",v.Local.iCnt,"sShipName",v.Local.sShipName,"sShipAddress1",v.Local.sShipAddress1,"sShipAddress2",v.Local.sShipAddress2,"sShipCity",v.Local.sShipCity,"sShipState",v.Local.sShipState,"sShipZip",v.Local.sShipZip,"sShipPhoneNum",v.Local.sShipPhoneNum)
+				'---END CASE 1.3---
+			
+			f.Intrinsic.Control.EndIf		
+		'End sectionsGSSCustProspReturned is populated by Sugar dev				
+		
+		'Start sGSSCustProspReturned is blank
+		f.Intrinsic.Control.Else
+						
+			
+			'Check if there is a Customer with the External ID
+			f.Intrinsic.String.Build("Select Customer from v_cust_form_info where External_id = '{0}'",v.DataTable.Inbound(v.Local.iCnt).ExternalID!FieldValTrim,v.Local.sSQL)
+			f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+			
+			'Customer exists
+			f.Intrinsic.Control.If(v.Local.sRet,<>,"")
+				'---CASE 2.1---
+				'Update Custom DB
+				f.Intrinsic.String.Build("Update GCG_5625_Prospect_Upload set Processed = 1, Success = 'N', Reason = 'Customer exists',TransactionTypeProcessed = 'E', CustomerProspect = 'C', GSSCustProspReturned = '{0}', DateUploaded = '{1}',TimeUploaded = '{2}' where AutoID = '{3}'",v.Local.sRet.left6,v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Inbound(v.Local.iCnt).AutoID!FieldValString,v.Local.sSQL)
+				f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+				
+				'Display in log
+				f.Intrinsic.String.Build("AutoID {0} ... Customer {1} exists with External ID {2}",v.DataTable.Inbound(v.Local.iCnt).AutoID!FieldValString,v.Local.sRet.Left6,v.DataTable.Inbound(v.Local.iCnt).ExternalID!FieldValTrim,v.Local.sHold)
+				f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)
+				'---END CASE 2.1---
+				
+			'Customer does not exist. This might be a record for new prospect/update prospect
+			f.Intrinsic.Control.ElseIf(v.Local.sRet,=,"")
+				
+				'---CASE 2.2---Customer does not exist
+			
+				'Check if there is a prospect with that External ID
+				f.Intrinsic.String.Build("Select Prospect from v_Prospect_Aux where External_id = '{0}'",v.DataTable.Inbound(v.Local.iCnt).ExternalID!FieldValTrim,v.Local.sSQL)
+				f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+				
+				'No customer exists but prospect exists, go ahead and update prospect
+				f.Intrinsic.Control.If(v.Local.sRet,<>,"")	
+					
+					'---CASE 2.2.1
+					f.Intrinsic.String.LPad(v.Local.sPhoneNum," ",20,v.Local.sPhoneNum)
+					f.Intrinsic.String.LPad(v.Local.sShipPhoneNum," ",20,v.Local.sShipPhoneNum)
+					f.Intrinsic.Control.CallSub("Update_Current_Prospect","sCurrentProspect",v.Local.sRet.left6,"sProspectName",v.Local.sProspName,"sAddress1",v.Local.sAddress1,"sAddress2",v.Local.sAddress2,"sCity",v.Local.sCity,"sState",v.Local.sState,"sZip",v.Local.sZip,"sWebAddress",v.Local.sWebAddress,"sSalesman",v.Local.sSalesman,"sPhoneNum",v.Local.sPhoneNum,"sEmail",v.Local.sEmail,"iCnt",v.Local.iCnt,"sShipName",v.Local.sShipName,"sShipAddress1",v.Local.sShipAddress1,"sShipAddress2",v.Local.sShipAddress2,"sShipCity",v.Local.sShipCity,"sShipState",v.Local.sShipState,"sShipZip",v.Local.sShipZip,"sShipPhoneNum",v.Local.sShipPhoneNum)
+					'---END CASE 2.2.1
+				
+				f.Intrinsic.Control.Else
+				
+					'---CASE 2.2.2---					
+					'No customer exists, no prospect exists, go ahead and create the new prospect			
+					'Get the next GSS Prospect number
+					'Get all numeric prospect and customer numbers
+					f.Intrinsic.Control.If(v.DataTable.CurrentNumericProspCusts.Exists)
+						f.Data.DataTable.Close("CurrentNumericProspCusts")
+					f.Intrinsic.Control.EndIf
+					f.Data.DataTable.CreateFromSQL("CurrentNumericProspCusts","conx","select Case when IsNumeric(Prospect) = 1 then Cast(Prospect as Integer) When IsNumeric(Prospect) = 0 then Cast(0 as Integer) End as NumericProspCust from V_Prospect_Master Union select Case when IsNumeric(Customer) = 1 then Cast(Customer as Integer) When IsNumeric(Customer) = 0 then Cast(0 as Integer) End as NumericProspCust from V_Customer_Master",True)
+					'Get the max and increment by 1
+					f.Data.DataTable.Compute("CurrentNumericProspCusts","Max([NumericProspCust])","",v.Local.sHold)
+					v.Local.iNextProspect.Set(v.Local.sHold)
+					f.Intrinsic.Math.Add(v.Local.iNextProspect,1,v.Local.iNextProspect)
+					f.Intrinsic.String.LPad(v.Local.iNextProspect,"0",6,v.Local.sNextProspectNumber)				
+					
+					'Add record to 6014
+					f.Data.DataTable.AddRow("6014","ProspNum",v.Local.sNextProspectNumber,"BillName",v.Local.sProspName,"BillAddress1",v.Local.sAddress1,"BillAddress2",v.Local.sAddress2,"BillCity",v.Local.sCity,"BillState",v.Local.sState,"BillZip",v.Local.sZip,"PhoneNum",v.Local.sPhoneNum,"ShipName",v.Local.sShipName,"ShipAddress1",v.Local.sShipAddress1,"ShipAddress2",v.Local.sShipAddress2,"ShipCity",v.Local.sShipCity,"ShipState",v.Local.sShipState,"ShipZip",v.Local.sShipZip,"ShipPhone",v.Local.sShipPhoneNum,"Email",v.Local.sEmail,"URL",v.Local.sWebAddress,"NewCustID",v.Local.sNextProspectNumber,"Salesman",v.Local.sSalesman,"ExternalID",v.Local.sExternalID)
+		
+					f.Intrinsic.Control.CallSub("6014","iMode",50)
+					
+					F.Global.General.SaveOption(401084,0,"","","","","","",v.Local.sNextProspectNumber)
+					F.ODBC.Connection!conx.ExecuteAndReturn("Select Last_PO_Num from Last_PO where ASS_SYS = 'ARM' and ASS_SUB_SYS = 'ISC'",v.Local.sOp)
+					f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF.Not)
+						v.Local.sOp.Set(v.Local.sOp.Left1)
+						f.Intrinsic.Control.If(v.Local.sOp.UCase,=,"Y",or,v.Local.sOp.UCase,=,"N")
+							f.Intrinsic.String.Build("{0}{1}",v.Local.sOp,v.Local.sNextProspectNumber,v.Local.sOp)
+							f.Intrinsic.String.Build("Update Last_PO set Last_PO_Num = '{0}' where ASS_SYS = 'ARM' and ASS_SUB_SYS = 'ISC'",v.Local.sOp,v.Local.sSQL)
+							f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+						f.Intrinsic.Control.EndIf				
+					f.Intrinsic.Control.EndIf
+					
+					'Add record to CUST_PROSP_LIST
+					f.Intrinsic.String.Build("Insert into CUST_PROSP_LIST (Prospect,Name,City,State,Zip,Phone,Type)  values  ('{0}','{1}','{2}','{3}','{4}','{5}','P')",v.Local.sNextProspectNumber,v.Local.sProspName.PSQLFriendly,v.Local.sCity.PSQLFriendly,v.Local.sState.PSQLFriendly,v.Local.sZip.PSQLFriendly,v.Local.sPhoneNum.PSQLFriendly,v.Local.sSQL)
+					f.ODBC.Connection!conx.Execute(v.Local.sSQL)					
+					
+					'Return result to custom table 
+					f.Intrinsic.String.Build("Update GCG_5625_Prospect_Upload set Processed = 1, Success = 'Y', TransactionTypeProcessed = 'N', CustomerProspect = 'P', GSSCustProspReturned = '{0}', DateUploaded = '{1}',TimeUploaded = '{2}' where AutoID = '{3}'",v.Local.sNextProspectNumber,v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Inbound(v.Local.iCnt).AutoID!FieldValString,v.Local.sSQL)
+					f.ODBC.Connection!conx.Execute(v.Local.sSQL)		
+					
+					
+					'Append to Transaction log
+					f.Intrinsic.String.Build("AutoID {0} ... Prospect created: {1}, External ID: {2}, {3}, {4}, {5}, {6}, {7}, {8}",v.DataTable.Inbound(v.Local.iCnt).AutoID!FieldValString,v.Local.sNextProspectNumber,v.DataTable.Inbound(v.Local.iCnt).ExternalID!FieldValTrim,v.DataTable.Inbound(v.Local.iCnt).ProspName!FieldValTrim,v.DataTable.Inbound(v.Local.iCnt).Address1!FieldValTrim,v.DataTable.Inbound(v.Local.iCnt).City!FieldValTrim,v.DataTable.Inbound(v.Local.iCnt).State!FieldValTrim,v.DataTable.Inbound(v.Local.iCnt).Zip!FieldValTrim,v.DataTable.Inbound(v.Local.iCnt).WebAddress!FieldValTrim,v.Local.sHold)
+					f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)	
+					'---END CASE 2.2.2---
+					
+				f.Intrinsic.Control.EndIf
+				'---END CASE 2.2
+				
+				
+			f.Intrinsic.Control.EndIf					
+			
+			
+		'EndIf sGSSCustProspReturned is blank		
+		f.Intrinsic.Control.EndIf
+		
+	f.Intrinsic.Control.Next(v.Local.iCnt)
+
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.Prospect_Process.End
+
+Program.Sub.Update_Current_Prospect.Start
+	v.Local.sError.Declare
+	v.Local.iCnt.Declare
+	v.Local.sSQL.Declare
+	V.Local.sRet.Declare
+	v.Local.sHold.Declare
+
+	v.Local.sExternalID.Declare
+
+	v.Local.sProspName.Declare
+	v.Local.sAddress1.Declare
+	v.Local.sAddress2.Declare
+	v.Local.sCity.Declare
+	v.Local.sState.Declare
+	v.Local.sZip.Declare
+	v.Local.sPhoneNum.Declare
+	
+	v.Local.sShipName.Declare
+	v.Local.sShipAddress1.Declare
+	v.Local.sShipAddress2.Declare
+	v.Local.sShipCity.Declare
+	v.Local.sShipState.Declare
+	v.Local.sShipZip.Declare
+	v.Local.sShipPhoneNum.Declare	
+	
+	v.Local.sWebAddress.Declare
+	v.Local.sSalesman.Declare	
+	v.Local.sEmail.Declare	
+	
+	v.Local.sGSSCustProspReturned.Declare	
+	v.Local.sCurrentProspect.Declare
+	
+	'Reset Args to Locals
+	v.Local.sCurrentProspect.Set(v.Args.sCurrentProspect)
+	v.Local.sProspName.Set(v.Args.sProspectName)
+	v.Local.sAddress1.Set(v.Args.sAddress1)
+	v.Local.sAddress2.Set(v.Args.sAddress2)
+	v.Local.sCity.Set(v.Args.sCity)
+	v.Local.sState.Set(v.Args.sState)
+	v.Local.sZip.Set(v.Args.sZip)
+	v.Local.sWebAddress.Set(v.Args.sWebAddress)
+	v.Local.sSalesman.Set(v.Args.sSalesman)
+	v.Local.sPhoneNum.Set(v.Args.sPhoneNum)	
+	v.Local.sEmail.Set(v.Args.sEmail)
+	v.Local.iCnt.Set(v.Args.iCnt)
+	
+	v.Local.sShipName.Set(v.Args.sShipName)
+	v.Local.sShipAddress1.Set(v.Args.sShipAddress1)
+	v.Local.sShipAddress2.Set(v.Args.sShipAddress2)
+	v.Local.sShipCity.Set(v.Args.sShipCity)
+	v.Local.sShipState.Set(v.Args.sShipState)
+	v.Local.sShipZip.Set(v.Args.sShipZip)
+	v.Local.sShipPhoneNum.Set(v.Args.sShipPhoneNum)
+
+	'Update Prospect_Master
+	f.Intrinsic.String.Build("Update Prospect_Master set Name_Prospect = '{1}',SHIP_NAME = '{13}',Address1 = '{2}',SHIP_ADRS1 = '{14}',Address2 = '{3}',SHIP_ADRS2 = '{15}',City = '{4}',Ship_City = '{16}',State = '{5}',Ship_State = '{17}',Zip = '{6}',Ship_Zip = '{18}',Ship_Telephone = '{19}',URL = '{7}',Telephone = '{8}',Email = '{9}',Last_Update = '{10}',LAST_UPDATE_BY ='{11}', TIME_LAST_CHG = '{12}00' where Prospect = '{0}'",v.Local.sCurrentProspect,v.Local.sProspName.PSQLFriendly,v.Local.sAddress1.PSQLFriendly,v.Local.sAddress2.PSQLFriendly,v.Local.sCity.PSQLFriendly,v.Local.sState.PSQLFriendly,v.Local.sZip.PSQLFriendly,v.Local.sWebAddress.PSQLFriendly,v.Local.sPhoneNum.PSQLFriendly,v.Local.sEmail.PSQLFriendly,v.Ambient.Date.PervasiveDate,v.Caller.User,v.Ambient.Now.FormatHHNNSS,v.Local.sShipName.PSQLFriendly,v.Local.sShipAddress1.PSQLFriendly,v.Local.sShipAddress2.PSQLFriendly,v.Local.sShipCity.PSQLFriendly,v.Local.sShipState.PSQLFriendly,v.Local.sShipZip.PSQLFriendly,v.Local.sShipPhoneNum.PSQLFriendly,v.Local.sSQL)	
+	
+	f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+	'Update Prospect_AUX for SalesRep
+	f.Intrinsic.String.Build("Update Prospect_AUX set SALSM = '{1}', External_ID = '{2}' where Prospect = '{0}'",v.Local.sCurrentProspect,v.Local.sSalesman.PSQLFriendly,v.DataTable.Inbound(v.Local.iCnt).ExternalID!FieldValTrim,v.Local.sSQL)
+	f.ODBC.Connection!conx.Execute(v.Local.sSQL)				
+	'Update Cust_Prosp_List
+	f.Intrinsic.String.Build("Update CUST_PROSP_LIST set Name = '{1}',City = '{2}',State = '{3}',Zip = '{4}',Phone = '{5}' where Prospect = '{0}'",v.Local.sCurrentProspect,v.Local.sProspName.PSQLFriendly,v.Local.sCity.PSQLFriendly,v.Local.sState.PSQLFriendly,v.Local.sZip.PSQLFriendly,v.Local.sPhoneNum.Trim,v.Local.sSQL)
+	f.ODBC.Connection!conx.Execute(v.Local.sSQL)				
+	
+	'Return result to custom table 
+	f.Intrinsic.String.Build("Update GCG_5625_Prospect_Upload set Processed = 1, Success = 'Y', TransactionTypeProcessed = 'U', CustomerProspect = 'P', GSSCustProspReturned = '{0}', DateUploaded = '{1}',TimeUploaded = '{2}' where AutoID = '{3}'",v.Local.sCurrentProspect,v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Inbound(v.Local.iCnt).AutoID!FieldValString,v.Local.sSQL)
+	f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+	
+	'Append to Transaction log
+	f.Intrinsic.String.Build("AutoID {0} ... Prospect updated: {1}, External ID: {2}, {3}, {4}, {5}, {6}, {7}, {8}",v.DataTable.Inbound(v.Local.iCnt).AutoID!FieldValString,v.Local.sCurrentProspect,v.DataTable.Inbound(v.Local.iCnt).ExternalID!FieldValTrim,v.Local.sProspName,v.Local.sAddress1,v.Local.sCity,v.Local.sState,v.Local.sZip,v.Local.sWebAddress,v.Local.sHold)
+	f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)		
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.Update_Current_Prospect.End
+
+Program.Sub.6014.Start
+F.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	V.Local.sRet.Declare(String)
+	V.Local.sFileContent.Declare(String)
+	V.Local.sFilePath.Declare(String)
+	V.Local.iCount.Declare(Long)
+	v.Local.sparams.Declare
+		
+	F.Intrinsic.String.Build("{0}\PROSPECT.TXT",V.Caller.FilesDir,V.Local.sFilePath)
+	
+	'Pad the parameters, generate a DV of the DT, send it to a string, write the string to a file, then call the callwrapper
+	F.Intrinsic.Control.If(V.DataTable.6014.RowCount,>,0)
+		'Pad parameters as needed by the upload file
+		f.Intrinsic.Control.CallSub("Format_6014_Lines")		
+		F.Data.DataView.Create("6014","6014View",22)
+		F.Data.DataView.ToString("6014","6014View","",V.Ambient.NewLine,V.Local.sFileContent)
+		F.Intrinsic.File.String2File(V.Local.sFilePath,V.Local.sFileContent)
+		F.Data.DataView.Close("6014","6014View")		
+		Function.Global.General.CallWrapperSync("6014",v.Args.iMode)
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.DeleteRow("6014")
+	f.Data.DataTable.AcceptChanges("6014")
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.6014.End
+
+Program.Sub.Format_6014_Lines.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.iCount.Declare
+	v.Local.sRet.Declare
+
+	F.Intrinsic.Control.For(V.Local.iCount,0,V.DataTable.6014.RowCount--,1)
+		'Prospect Number
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).ProspNum!FieldVal," ",6,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"ProspNum",V.Local.sRet)
+		'Name
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).BillName!FieldVal," ",30,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"BillName",V.Local.sRet)
+		'Address1
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).BillAddress1!FieldVal," ",30,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"BillAddress1",V.Local.sRet)
+		'Address2
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).BillAddress2!FieldVal," ",30,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"BillAddress2",V.Local.sRet)
+		'City
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).BillCity!FieldVal," ",15,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"BillCity",V.Local.sRet)
+		'State
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).BillState!FieldVal," ",3,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"BillState",V.Local.sRet)
+		'Zip
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).BillZip!FieldVal," ",13,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"BillZip",V.Local.sRet)
+		'Phone		
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).PhoneNum!FieldVal," ",13,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"PhoneNum",V.Local.sRet)
+		
+		'Ship Info***
+		'Name
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).ShipName!FieldVal," ",30,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"ShipName",V.Local.sRet)
+		'Address1
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).ShipAddress1!FieldVal," ",30,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"ShipAddress1",V.Local.sRet)
+		'Address2
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).ShipAddress2!FieldVal," ",30,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"ShipAddress2",V.Local.sRet)
+		'City
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).ShipCity!FieldVal," ",15,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"ShipCity",V.Local.sRet)
+		'State ATTENTION: STATE RPAD 2 (WITH BILLING ADDRESS, STATE MUST BE RIGHT PADDED 3)!!!!!!!!!!!
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).ShipState!FieldVal," ",2,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"ShipState",V.Local.sRet)
+		'Zip
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).ShipZip!FieldVal," ",13,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"ShipZip",V.Local.sRet)
+		'Phone
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).ShipPhone!FieldVal," ",13,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"ShipPhone",V.Local.sRet)
+		'End Ship info***
+		
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).Email!FieldVal," ",43,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"Email",V.Local.sRet)
+		
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).URL!FieldVal," ",120,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"URL",V.Local.sRet)
+		
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).Salesman!FieldVal," ",3,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"Salesman",V.Local.sRet)	
+		
+		F.Intrinsic.String.RPad(V.DataTable.6014(V.Local.iCount).ExternalID!FieldVal," ",12,V.Local.sRet)
+		F.Data.DataTable.SetValue("6014",V.Local.iCount,"ExternalID",V.Local.sRet)			
+		
+	F.Intrinsic.Control.Next(V.Local.iCount)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.Format_6014_Lines.End
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''
+Program.Sub.Process_Contact.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.iCnt.Declare
+	v.Local.sSQL.Declare
+	V.Local.sRet.Declare
+	v.Local.sHold.Declare
+	v.Local.sCustomer.Declare
+	v.Local.i2nd.Declare
+	v.Local.sType.Declare
+	v.Local.sID.Declare
+	v.Local.sSeq.Declare
+	v.Local.sProspect.Declare	
+	v.Local.sAutoID.Declare
+	'For Contact info
+	v.Local.sContactName.Declare
+	V.Local.sNamePrefix.Declare
+	v.Local.sFirstName.Declare
+	v.Local.sLastName.Declare
+	v.Local.sPreferredName.Declare	
+	v.Local.sPrimaryPhoneType.Declare	
+	v.Local.sPrimaryPhoneNumber.declare 
+	v.local.sPrimaryPhoneExtension.declare 
+	v.local.sEmail.declare 
+	v.local.sPrimaryAddress1.declare 
+	v.local.sPrimaryAddress2.declare 
+	v.local.sPrimaryCity.declare 
+	v.local.sPrimaryState.declare 
+	v.local.sPrimaryZip.declare 
+	v.local.sPrimaryAddressCountry.declare
+	v.Local.sUser_1.Declare	
+	v.Local.bNumeric.Declare
+	v.Local.iNum.Declare
+	v.Local.sGSSContactIDPopulated.Declare
+	v.Local.sGSSCustProspPopulated.Declare
+	v.Local.sExternalCustProspID.Declare
+	v.Local.sReason.Declare
+	v.Local.sCustProsp.Declare
+	v.Local.sCustomerProspectFlag.Declare
+	
+	'Primary Phone Type: 	0  Home		1  Fax		2  Mobile		3  Office		4  Pager		5 or Spaces No Phone Type
+	
+	'Get contact data from custom db that needs to be processed
+	f.Intrinsic.Control.If(v.DataTable.Contacts.Exists)
+		f.Data.DataTable.Close("Contacts")
+	f.Intrinsic.Control.EndIf
+	f.Data.DataTable.CreateFromSQL("Contacts","conx","Select AutoID,DatePushed,ExternalCustProspID,ExternalContactNum,ContactName,NamePrefix,FirstName,LastName,PreferredName,PrimaryPhoneType,PrimaryPhoneNumber,PrimaryPhoneExtension,Email,PrimaryAddress1,PrimaryAddress2,PrimaryCity,PrimaryState,PrimaryZip,PrimaryAddressCountry,GSSCustProspReturned,GSSContactIDReturned,ToDelete from GCG_5625_Contact_Upl where Processed = 0 Order by datepushed")
+	f.Intrinsic.Control.If(v.DataTable.Contacts.RowCount,=,0)
+		gui.Form.lblAtCycle.Caption(v.Global.iCycle)
+		f.Intrinsic.Control.ExitSub
+	f.Intrinsic.Control.EndIf	
+
+	
+	'Loop each contact record and process
+	f.Intrinsic.Control.For(v.Local.iCnt,0,v.DataTable.Contacts.RowCount--,1)
+		v.Local.sGSSContactIDPopulated.Set(v.DataTable.Contacts(v.Local.iCnt).GSSContactIDReturned!FieldValTrim)
+		v.Local.sGSSCustProspPopulated.Set(v.DataTable.Contacts(v.Local.iCnt).GSSCustProspReturned!FieldValTrim)
+		v.Local.sExternalCustProspID.Set(v.DataTable.Contacts(v.Local.iCnt).ExternalCustProspID!FieldValTrim)
+		
+		'''''''''''''''''''''''''''''''''''''''''''''''''DELETE SECTION'''''''''''''''''''''''''''''''''''''''''''
+		'---Case 1.1---Deletion
+		'Check if it is a ToDelete record
+		f.Intrinsic.Control.If(v.DataTable.Contacts(v.Local.iCnt).ToDelete!FieldValString,=,"True")
+			v.Local.sCustomer.Set("")
+			'''''CODE ADDED''''''''''''''''''''''			
+			f.Intrinsic.Control.If(v.Local.sGSSContactIDPopulated,<>,"",or,v.Local.sGSSCustProspPopulated,<>,"")
+				'Check if customer/prospect exists
+				v.Local.sCustomer.Set("")
+				f.Intrinsic.String.Build("Select Top 1 Customer from V_Customer_Master where customer = '{0}'",v.Local.sGSSCustProspPopulated,v.Local.sSQL)
+				f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+				f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF.Not)
+					v.Local.sCustomer.Set(v.Local.sRet)
+				f.Intrinsic.Control.Else
+					f.Intrinsic.String.Build("Select Top 1 Prospect from v_Prospect_Master where Prospect = '{0}'",v.Local.sGSSCustProspPopulated,v.Local.sSQL)
+					f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+					f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF.Not)
+						v.Local.sCustomer.Set(v.Local.sRet)
+					f.Intrinsic.Control.EndIf				
+				f.Intrinsic.Control.EndIf
+				
+				'So now if sCustomer = "" that means no customer/prospect exists
+				F.Intrinsic.Control.If(V.Local.sCustomer.Trim,=,"")	
+					
+					'---Case 1.1.1---
+					'There is no record to delete (No Customer/Prospect exists) 	
+					'Update custom DB
+					f.Intrinsic.String.Build("No Customer/Prospect exists as the GSSCustProspReturned {0} that Sugar Dev populated",v.Local.sGSSCustProspPopulated,v.Local.sReason)
+					f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'N',Reason = '{3}',TransactionTypeProcessed = 'Delete Contact', DateUploaded = '{0}',TimeUploaded = '{1}' where AutoID = '{2}'",v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sReason,v.Local.sSQL)
+					f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+					
+					'Display in Log
+					f.Intrinsic.String.Build("AutoID {0} ... {1} - for deletion",v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sReason,v.Local.sHold)
+					f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)
+					'---END CASSE 1.1.1---
+				
+				'sCustomer <> '', so Customer/Prospect exists
+				F.Intrinsic.Control.Else
+					
+					'---CASE 1.1.2---
+					'Customer/prospect exist, go find the contact with the contact ID provided
+					f.Intrinsic.String.Build("Select Top 1 Cust,ID,Type,Name,Name_First,Name_Last,Name_Preferred,Seq from Contact where Cust = '{0}' and ID = '{1}'",v.Local.sCustomer,v.Local.sGSSContactIDPopulated,v.Local.sSQL)
+					f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+					'We found a contact for that customer/prospect, so go delete
+					f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF.Not)
+					
+						'---CASE 1.1.2.1
+						'There is a contact record to delete
+						f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+						
+						f.Intrinsic.String.Build("Delete from Contact where Cust = '{0}' and ID = '{1}' and Type = '{2}' and Seq = '{3}'",v.Local.sRet(0),v.Local.sRet(1),v.Local.sRet(2),v.Local.sRet(7),v.Local.sSQL)
+						f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+						
+						'Update custom DB
+						f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'Y',TransactionTypeProcessed = 'Delete Contact', GSSCustProspReturned = '{0}', GSSContactIDReturned = '{1}',DateUploaded = '{2}',TimeUploaded = '{3}' where AutoID = '{4}'",v.Local.sRet(0),v.Local.sRet(1),v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sSQL)
+						f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+						
+						'Display in Log
+						f.Intrinsic.String.Build("AutoID {0} ... Contact deleted with{1} Contact ID {2}, Customer/Prospect {3}, Contact ID {4}, Name {5}, {6}, {7}, {8}",v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,"",v.Local.sGSSContactIDPopulated,v.Local.sRet(0),v.Local.sRet(1),v.Local.sRet(3),v.Local.sRet(4),v.Local.sRet(5),v.Local.sRet(6),v.Local.sHold)
+						f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)
+						'---END CASE 1.1.2.1
+						
+					'No Contact ID associated with that customer/prosect, so go display message
+					f.Intrinsic.Control.Else					
+					
+						'---CASE 1.1.2.2
+						f.Intrinsic.String.Build("No Contact ID {0} exists for GSSCustProspReturned {1} that Sugar Dev populated",v.Local.sGSSContactIDPopulated,v.Local.sGSSCustProspPopulated,v.Local.sReason)
+						f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'N',Reason = '{3}',TransactionTypeProcessed = 'Delete Contact', DateUploaded = '{0}',TimeUploaded = '{1}' where AutoID = '{2}'",v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sReason,v.Local.sSQL)
+						f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+						
+						'Display in Log
+						f.Intrinsic.String.Build("AutoID {0} ... {1} - for deletion",v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sReason,v.Local.sHold)
+						f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)	
+						'---END CASE 1.1.2.2'
+						
+					f.Intrinsic.Control.EndIf				
+					'---END CASE 1.1.2
+					
+				'End customer <> ""
+				F.Intrinsic.Control.EndIf				
+				'''END CODE ADDED for DELETETION with sGSSContactIDPopulate provided and sGSSCustProspPopulated provided				
+				
+			'If sGSSContactIDPopulate is not provided and sGSSCustProspPopulated is not provided, go DELETION process with ExternerCustProspID and ExternalContactNum				
+			f.Intrinsic.Control.Else
+				
+				'---CASE 1.2---given sExternalCustProspID and ExternalContactNum
+				v.Local.sCustomer.Set("")
+				'To Delete contact WITHOUT POPULATING THE sGSSCustProspReturned AND sGSSCustProspReturned. Just get the sExternalCustProspID and ExternalContactNum populated by Sugar Dev
+				'Get Customer/Prospect number with the External ID
+				f.Intrinsic.String.Build("Select Top 1 Customer from v_cust_form_info where External_id = '{0}'",v.Local.sExternalCustProspID,v.Local.sSQL)
+				f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+				f.Intrinsic.Control.If(v.Local.sRet,<>,"")
+					v.Local.sCustomer.Set(v.Local.sRet)
+				f.Intrinsic.Control.Else
+					f.Intrinsic.String.Build("Select Top 1 Prospect from v_Prospect_Aux where External_id = '{0}'",v.Local.sExternalCustProspID,v.Local.sSQL)
+					f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+					f.Intrinsic.Control.If(v.Local.sRet,<>,"")
+						v.Local.sCustomer.Set(v.Local.sRet)
+					f.Intrinsic.Control.EndIf				
+				f.Intrinsic.Control.EndIf
+				
+				'Customer/prospect found with the given ExternalCustProspID, continue to find the contact with that customer/prospect
+				f.Intrinsic.Control.If(v.Local.sCustomer,<>,"")
+					
+					'---CASE 1.2.1---
+					f.Intrinsic.String.Build("Select Top 1 Cust,ID,Type,Name,Name_First,Name_Last,Name_Preferred,Seq from Contact where Cust = '{0}' and User_1 = '{1}'",v.Local.sCustomer,v.DataTable.Contacts(v.Local.iCnt).ExternalContactNum!FieldValString,v.Local.sSQL)
+					f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+					
+					'There is a contact associated with that customer/prospect, so go delete
+					f.Intrinsic.Control.If(v.Local.sRet,<>,"")
+						
+						'---CASE 1.2.1.1
+						f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+						
+						f.Intrinsic.String.Build("Delete from Contact where Cust = '{0}' and User_1 = '{1}' and ID = '{2}' and Type = '{3}' and Seq = '{4}'",v.Local.sRet(0),v.DataTable.Contacts(v.Local.iCnt).ExternalContactNum!FieldValString,v.Local.sRet(1),v.Local.sRet(2),v.Local.sRet(7),v.Local.sSQL)
+						f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+						
+						'Update custom DB
+						f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'Y',TransactionTypeProcessed = 'Delete Contact', GSSCustProspReturned = '{0}', GSSContactIDReturned = '{1}',DateUploaded = '{2}',TimeUploaded = '{3}' where AutoID = '{4}'",v.Local.sRet(0),v.Local.sRet(1),v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sSQL)
+						f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+						
+						'Display in Log
+						f.Intrinsic.String.Build("AutoID {0} ... Contact deleted with External ID {1}, External Contact ID {2}, Customer/Prospect {3}, Contact ID {4}, Name {5}, {6}, {7}, {8}",v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.DataTable.Contacts(v.Local.iCnt).ExternalCustProspID!FieldValTrim,v.DataTable.Contacts(v.Local.iCnt).ExternalContactNum!FieldValTrim,v.Local.sRet(0),v.Local.sRet(1),v.Local.sRet(3),v.Local.sRet(4),v.Local.sRet(5),v.Local.sRet(6),v.Local.sHold)
+						f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)	
+						'---END CASE 1.2.1.1
+						
+					'There is no contact record associated with that Customer/prospect, so display message
+					f.Intrinsic.Control.Else
+						
+						'---CASE 1.2.1.2
+							
+						'Update custom DB
+						f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'N',Reason = 'No contact found to delete',TransactionTypeProcessed = 'Delete Contact', DateUploaded = '{0}',TimeUploaded = '{1}' where AutoID = '{2}'",v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sSQL)
+						f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+						
+						'Display in Log
+						f.Intrinsic.String.Build("AutoID {0} ... No Contact found to delete with External ID {1}, External Contact ID {2}",v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.DataTable.Contacts(v.Local.iCnt).ExternalCustProspID!FieldValTrim,v.DataTable.Contacts(v.Local.iCnt).ExternalContactNum!FieldValTrim,v.Local.sHold)
+						f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)	
+						'---END CASE 1.2.1.2
+						
+					'End if statement for contact exists/not for a given customer/prospect
+					f.Intrinsic.Control.EndIf				
+					'---END CASE 1.2.1
+				
+				'Customer/Prospect does not exists
+				f.Intrinsic.Control.Else
+					'There is no record to delete (No Customer/Prospect exists) 	
+					'Update custom DB
+					f.Intrinsic.String.Build("No Customer/Prospect exists as with the ExternalID {0} provided by Sugar Dev",v.Local.sExternalCustProspID,v.Local.sReason)
+					f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'N',Reason = '{3}',TransactionTypeProcessed = 'Delete Contact', DateUploaded = '{0}',TimeUploaded = '{1}' where AutoID = '{2}'",v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sReason,v.Local.sSQL)
+					f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+					
+					'Display in Log
+					f.Intrinsic.String.Build("AutoID {0} ... {1} - for deletion",v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sReason,v.Local.sHold)
+					f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)	
+				
+				
+				'End if statement customer/prospect exists or not
+				f.Intrinsic.Control.EndIf
+				'---END CASE 1.2
+				
+			f.Intrinsic.Control.EndIf			
+			'End deletion
+		'---END CASE 1.1---DELETION
+		
+		
+		'This is not for Delete
+		f.Intrinsic.Control.Else	
+		'---CASE 2---For updating	
+		
+			'Set Contact data
+			v.Local.sAutoID.Set(v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValTrim)
+			v.Local.sContactName.Set(v.DataTable.Contacts(v.Local.iCnt).ContactName!FieldValTrim)
+			
+			V.Local.sNamePrefix.Set(v.DataTable.Contacts(v.Local.iCnt).NamePrefix!FieldValTrim)
+			v.Local.sFirstName.Set(v.DataTable.Contacts(v.Local.iCnt).FirstName!FieldValTrim)
+			v.Local.sLastName.Set(v.DataTable.Contacts(v.Local.iCnt).LastName!FieldValTrim)		
+			v.Local.sPreferredName.Set(v.DataTable.Contacts(v.Local.iCnt).PreferredName!FieldValTrim)
+			v.Local.sPrimaryPhoneType.Set(v.DataTable.Contacts(v.Local.iCnt).PrimaryPhoneType!FieldValTrim)			
+			v.Local.sPrimaryPhoneNumber.Set(v.DataTable.Contacts(v.Local.iCnt).PrimaryPhoneNumber!FieldValTrim) 
+			v.local.sPrimaryPhoneExtension.Set(v.DataTable.Contacts(v.Local.iCnt).PrimaryPhoneExtension!FieldValTrim) 
+			v.local.sEmail.Set(v.DataTable.Contacts(v.Local.iCnt).Email!FieldValTrim) 
+			v.local.sPrimaryAddress1.Set(v.DataTable.Contacts(v.Local.iCnt).PrimaryAddress1!FieldValTrim) 
+			v.local.sPrimaryAddress2.Set(v.DataTable.Contacts(v.Local.iCnt).PrimaryAddress2!FieldValTrim) 
+			v.local.sPrimaryCity.Set(v.DataTable.Contacts(v.Local.iCnt).PrimaryCity!FieldValTrim) 
+			v.local.sPrimaryState.Set(v.DataTable.Contacts(v.Local.iCnt).PrimaryState!FieldValTrim) 
+			v.local.sPrimaryZip.Set(v.DataTable.Contacts(v.Local.iCnt).PrimaryZip!FieldValTrim) 
+			v.local.sPrimaryAddressCountry.Set(v.DataTable.Contacts(v.Local.iCnt).PrimaryAddressCountry!FieldValTrim)
+			v.Local.sUser_1.Set(v.DataTable.Contacts(v.Local.iCnt).ExternalContactNum!FieldValTrim)
+			
+			'Validate NamePrefix in [0,4]
+			f.Intrinsic.Math.IsNumeric(v.Local.sNamePrefix,v.Local.bNumeric)
+			f.Intrinsic.Control.If(v.Local.bNumeric.Not)
+				v.Local.sNamePrefix.Set("")
+			f.Intrinsic.Control.Else
+				v.Local.iNum.Set(v.Local.sNamePrefix)
+				f.Intrinsic.Control.If(v.Local.iNum,<,0,or,v.Local.iNum,>,4)
+					v.Local.sNamePrefix.Set("")
+				f.Intrinsic.Control.EndIf		
+			f.Intrinsic.Control.EndIf
+			
+			'Validate PrimaryPhoneType in [0,5]
+			f.Intrinsic.Math.IsNumeric(v.Local.sPrimaryPhoneType,v.Local.bNumeric)
+			f.Intrinsic.Control.If(v.Local.bNumeric.Not)
+				v.Local.sPrimaryPhoneType.Set("")
+			f.Intrinsic.Control.Else
+				v.Local.iNum.Set(v.Local.sPrimaryPhoneType)
+				f.Intrinsic.Control.If(v.Local.iNum,<,0,or,v.Local.iNum,>,5)
+					v.Local.sPrimaryPhoneType.Set("")
+				f.Intrinsic.Control.EndIf		
+			f.Intrinsic.Control.EndIf	
+			
+			'''''''''''''CODE ADDED''''''''''''''''''''''
+			'If Sugar dev populated 
+			
+			v.Local.sCustomer.Set("")
+			
+			'''''CODE ADDED''''''''''''''''''''''			
+			f.Intrinsic.Control.If(v.Local.sGSSCustProspPopulated,<>,"")
+				'f.Intrinsic.ui.Msgbox("---CASE 2.1---")
+				'---CASE 2.1---
+				'Check if customer/prospect exists
+				v.Local.sCustomer.Set("")
+				v.Local.sCustProsp.Set("")
+				v.Local.sCustomerProspectFlag.Set("")
+				f.Intrinsic.String.Build("Select Customer from V_Customer_Master where customer = '{0}'",v.Local.sGSSCustProspPopulated,v.Local.sSQL)
+				f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+				f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF.Not)
+					v.Local.sCustomer.Set(v.Local.sRet)
+					v.Local.sCustProsp.Set("C")
+					v.Local.sCustomerProspectFlag.Set("Customer")
+				f.Intrinsic.Control.Else
+					f.Intrinsic.String.Build("Select Top 1 Prospect from v_Prospect_Master where Prospect = '{0}'",v.Local.sGSSCustProspPopulated,v.Local.sSQL)
+					f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+					f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF.Not)
+						v.Local.sCustomer.Set(v.Local.sRet)
+						v.Local.sCustProsp.Set("P")
+						v.Local.sCustomerProspectFlag.Set("Prospect")
+					f.Intrinsic.Control.Else
+						v.Local.sCustomer.Set("")
+						v.Local.sCustProsp.Set("")
+						v.Local.sCustomerProspectFlag.Set("")
+					f.Intrinsic.Control.EndIf				
+				f.Intrinsic.Control.EndIf
+				
+				F.Intrinsic.Control.If(V.Local.sCustomer.Trim,=,"")	
+					'---CASE 2.1.1-------
+					'f.Intrinsic.ui.Msgbox("---CASE 2.1.1-------")
+					'There is no record to Update	
+					'Update custom DB
+					f.Intrinsic.String.Build("No Customer/Prospect exists as the GSSCustProspReturned {0} that Sugar Dev populated",v.Local.sGSSCustProspPopulated,v.Local.sReason)
+					f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'N',Reason = '{3}',TransactionTypeProcessed = 'Update Contact', DateUploaded = '{0}',TimeUploaded = '{1}' where AutoID = '{2}'",v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sReason,v.Local.sSQL)
+					f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+					
+					'Display in Log
+					f.Intrinsic.String.Build("AutoID {0} ... {1}",v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sReason,v.Local.sHold)
+					f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)	
+					'---END CASE 2.1.1---
+					
+				'Customer/Prospect exists, check if Sugar Dev populate contact ID, if blank, create new contact	. Else, update current contact with the given contact id
+				F.Intrinsic.Control.Else
+					'--- CASE 2.1.2---
+					'f.Intrinsic.ui.Msgbox("--- CASE 2.1.2 bis---")
+				
+					
+					f.Intrinsic.Control.If(v.Local.sGSSContactIDPopulated.Trim,=,"")
+						'--- CASE 2.1.2.1---
+						'Get if there is a contact with that customer/prospect ID and the external ID given by sugar
+						f.Intrinsic.String.Build("Select Top 1 Cust,ID,Type,Name,Name_First,Name_Last,Name_Preferred,Seq,User_1 from Contact where Cust = '{0}' and User_1 = '{1}'",v.Local.sCustomer,v.DataTable.Contacts(v.Local.iCnt).ExternalContactNum!FieldValTrim,v.Local.sSQL)					
+
+						f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+						
+						'There is contact
+						f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF.Not)
+							'--- CASE 2.1.2.1.1---
+						
+							'Update the contact
+							f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+						
+
+							v.Local.sType.Set(v.Local.sRet(2))
+							v.Local.sID.Set(v.Local.sRet(1))
+							v.Local.sSeq.Set(v.Local.sRet(7))
+							v.Local.sUser_1.Set(v.Local.sRet(8))
+							
+							'Build SQL and update the contact of the customer
+							f.Intrinsic.String.Build("Update Contact Set NAME = '{3}',NAME_PREFERRED = '{4}',PHONE1 = '{5}',EXT1 = '{6}',EMAIL1 = '{7}',ADDRESS_1 = '{8}',ADDRESS_2 = '{9}',CITY = '{10}',STATE = '{11}',ZIP = '{12}',NAME_PREFIX = '{13}',NAME_FIRST = '{14}',NAME_LAST = '{15}',PHONE_T1 = '{16}' where Cust = '{0}' and ID = '{1}' and User_1 =  '{2}' and Seq = '{17}' and Type = '{18}'",v.Local.sCustomer,v.Local.sID,v.Local.sUser_1,v.Local.sContactName.PSQLFriendly,v.Local.sPreferredName.PSQLFriendly,v.Local.sPrimaryPhoneNumber.PSQLFriendly,v.Local.sPrimaryPhoneExtension.PSQLFriendly,v.Local.sEmail.PSQLFriendly,v.Local.sPrimaryAddress1.PSQLFriendly,v.Local.sPrimaryAddress2.PSQLFriendly,v.Local.sPrimaryCity.PSQLFriendly,v.Local.sPrimaryState.PSQLFriendly,v.Local.sPrimaryZip.PSQLFriendly,V.Local.sNamePrefix.PSQLFriendly,V.Local.sFirstName.PSQLFriendly,V.Local.sLastName.PSQLFriendly,V.Local.sPrimaryPhoneType.PSQLFriendly,v.Local.sSeq,v.Local.sType,v.Local.sSQL)
+							f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+							'Update custom DB
+							f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'Y',TransactionTypeProcessed = 'Update Contact', GSSCustProspReturned = '{0}', GSSContactIDReturned = '{1}',DateUploaded = '{2}',TimeUploaded = '{3}' where AutoID = '{4}'",v.Local.sCustomer,v.Local.sID,v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.Local.sAutoID,v.Local.sSQL)
+							f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+							'Display in Log
+							f.Intrinsic.String.Build("AutoID {0} ... Contact updated, {9} {10} with ID {11} for {8} {1} {2}, {3}, {4}, {5}, {6}, Phone: {7}",v.Local.sAutoID,v.Local.sCustomer,v.Local.sContactName,v.Local.sPrimaryAddress1,v.Local.sPrimaryCity,v.Local.sPrimaryState,v.Local.sPrimaryZip,v.Local.sPrimaryPhoneNumber,v.Local.sCustomerProspectFlag,v.Local.sCustomerProspectFlag,v.Local.sCustomer,v.Local.sID,v.Local.sHold)
+							f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)
+										
+						
+						'There is not
+						f.Intrinsic.Control.Else			
+				
+							'''''''''''''''''''
+							'Create new contact
+							'Get next sequence
+							'--- CASE 2.1.2.1.2---
+							'f.Intrinsic.ui.Msgbox("--- CASE 2.1.2.1---")
+							f.Intrinsic.String.Build("Select top 1 Seq from Contact where Cust = '{0}' and Type = '{1}' order by Seq desc",v.Local.sCustomer,v.Local.sCustProsp,v.Local.sSQL)
+							f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+							f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF.Not)
+								f.Intrinsic.Math.Add(v.Local.sRet,1,v.Local.sRet)
+								f.Intrinsic.String.LPad(v.Local.sRet,"0",2,v.Local.sSeq)
+							f.Intrinsic.Control.Else
+								v.Local.sSeq.Set("00")
+							f.Intrinsic.Control.EndIf						
+							
+							'create new contact with this customer ID
+							f.Data.DataTable.DeleteRow("NewContactUpl",-1)
+							f.Data.DataTable.AcceptChanges("NewContactUpl")
+							f.Data.DataTable.AddRow("NewContactUpl","CustProsp",v.Local.sCustomer,"ContactType",v.Local.sCustProsp,"ContactName",v.Local.sContactName,"Sequence",v.Local.sSeq,"NamePrefix",v.Local.sNamePrefix,"FirstName",v.Local.sFirstName,"LastName",v.Local.sLastName,"PreferredName",v.Local.sPreferredName,"PrimaryPhoneType",v.Local.sPrimaryPhoneType,"PrimaryPhoneNumber",v.Local.sPrimaryPhoneNumber,"PrimaryPhoneExtension",v.Local.sPrimaryPhoneExtension,"Email",v.Local.sEmail,"PrimaryAddress1",v.Local.sPrimaryAddress1,"PrimaryAddress2",v.Local.sPrimaryAddress2,"PrimaryCity",v.Local.sPrimaryCity,"PrimaryState",v.Local.sPrimaryState,"PrimaryZip",v.Local.sPrimaryZip,"PrimaryAddressCountry",v.Local.sPrimaryAddressCountry,"User1",v.Local.sUser_1)
+							
+							f.Intrinsic.Control.CallSub("Create_New_Contact")
+							
+							'Check if successed ... Callwrapper does not save User1, so worked around by getting the latest record then update that record with User1
+							f.Intrinsic.String.Build("select Top 1 Cust,Type,ID,Seq from Contact where Last_Chg_pgm = 'UPLCNTCT' and Last_Chg_By = '{0}' and LAST_CHG_DATE = '{1}' and LAST_CHG_TIME >= '{2}' ORDER BY LAST_CHG_DATE DESC,LAST_CHG_TIME DESC",v.Caller.User,v.Global.sDateStartCallWrapper,v.Global.sTimeStartCallWrapper,v.Local.sSQL)
+							f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+							f.Intrinsic.Control.If(v.Local.sRet,<>,"")
+								f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+								v.Local.sID.Set(v.Local.sRet(2))
+								f.Intrinsic.String.Build("Update Contact set User_1 = '{0}' where Cust = '{1}' and Type = '{2}' and ID = '{3}' and Seq = '{4}'",v.Local.sUser_1,v.Local.sRet(0),v.Local.sRet(1),v.Local.sID,v.Local.sRet(3),v.Local.sSQL)
+								f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+						
+								'Update custom DB		
+								f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'Y',TransactionTypeProcessed = 'New Contact', GSSCustProspReturned = '{0}', GSSContactIDReturned = '{1}',DateUploaded = '{2}',TimeUploaded = '{3}' where AutoID = '{4}'",v.Local.sCustomer,v.Local.sID,v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.Local.sAutoID,v.Local.sSQL)
+								f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+								
+								'Display in Log
+								f.Intrinsic.String.Build("AutoID {0} ... Contact created attached to {11} {10} with ID {9} for {8} {1} {2}, {3}, {4}, {5}, {6}, Phone: {7}",v.Local.sAutoID,v.Local.sCustomer,v.Local.sContactName,v.Local.sPrimaryAddress1,v.Local.sPrimaryCity,v.Local.sPrimaryState,v.Local.sPrimaryZip,v.Local.sPrimaryPhoneNumber,v.Local.sCustomerProspectFlag,v.Local.sID,v.Local.sCustomer,v.Local.sCustomerProspectFlag,v.Local.sHold)
+								f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)
+							
+							f.Intrinsic.Control.Else
+						
+								'Unsuccessful	
+								f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'N',Reason = 'Callwrapper error', DateUploaded = '{0}',TimeUploaded = '{1}' where AutoID = '{2}'",v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.Local.sAutoID,v.Local.sSQL)
+								f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+								
+								'Display in Log
+								f.Intrinsic.String.Build("AutoID {0} ... Callwrapper ERROR when creating new contact for Customer {1} {2}, {3}, {4}, {5}, {6}, Phone: {7}",v.Local.sAutoID,v.Local.sCustomer,v.Local.sContactName,v.Local.sPrimaryAddress1,v.Local.sPrimaryCity,v.Local.sPrimaryState,v.Local.sPrimaryZip,v.Local.sPrimaryPhoneNumber,v.Local.sHold)
+								f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)					
+							f.Intrinsic.Control.EndIf				
+							
+							'---END CASE 2.1.2.1---
+							'''''''''''''''''''''''''''''''''
+							
+						f.Intrinsic.Control.EndIf	
+					
+					'Update with the given contact id
+					f.Intrinsic.Control.Else	
+						'f.Intrinsic.ui.Msgbox("---CASE 2.1.2.2---")
+				
+						'---CASE 2.1.2.2---
+						'Customer/prospect exist
+						f.Intrinsic.String.Build("Select Top 1 Cust,ID,Type,Name,Name_First,Name_Last,Name_Preferred,Seq from Contact where Cust = '{0}' and ID = '{1}'",v.Local.sCustomer,v.Local.sGSSContactIDPopulated,v.Local.sSQL)
+						f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+						f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF.Not)
+						
+							'---CASE 2.1.2.2.1---Customer/propsect exists, contact exists
+							'There is record to update
+							f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+							
+							f.Intrinsic.String.Build("Select Top 1 Cust,Type,ID,Seq,User_1 from Contact where Cust = '{0}' and ID = '{1}' and Type = '{2}' and Seq = '{3}'",v.Local.sCustomer,v.Local.sGSSContactIDPopulated,v.Local.sRet(2),v.Local.sRet(7),v.Local.sSQL)
+							f.Intrinsic.Control.If(v.DataTable.Teemp.Exists)
+								f.Data.DataTable.Close("Teemp")
+							f.Intrinsic.Control.EndIf
+							f.Data.DataTable.CreateFromSQL("Teemp","conx",v.Local.sSQL,True)	
+							
+							
+							'update contact
+							f.Intrinsic.Control.For(v.Local.i2nd,0,v.DataTable.Teemp.RowCount--,1)
+								v.Local.sType.Set(v.DataTable.Teemp(v.Local.i2nd).Type!FieldValString)
+								v.Local.sID.Set(v.DataTable.Teemp(v.Local.i2nd).ID!FieldValString)
+								v.Local.sSeq.Set(v.DataTable.Teemp(v.Local.i2nd).Seq!FieldValString)
+								
+								'Build SQL and update the contact of the customer
+								f.Intrinsic.String.Build("Update Contact Set NAME = '{3}',NAME_PREFERRED = '{4}',PHONE1 = '{5}',EXT1 = '{6}',EMAIL1 = '{7}',ADDRESS_1 = '{8}',ADDRESS_2 = '{9}',CITY = '{10}',STATE = '{11}',ZIP = '{12}',NAME_PREFIX = '{13}',NAME_FIRST = '{14}',NAME_LAST = '{15}',PHONE_T1 = '{16}' where Cust = '{0}' and ID = '{1}' and User_1 =  '{2}' and Seq = '{17}' and Type = '{18}'",v.Local.sCustomer,v.Local.sID,v.Local.sUser_1,v.Local.sContactName.PSQLFriendly,v.Local.sPreferredName.PSQLFriendly,v.Local.sPrimaryPhoneNumber.PSQLFriendly,v.Local.sPrimaryPhoneExtension.PSQLFriendly,v.Local.sEmail.PSQLFriendly,v.Local.sPrimaryAddress1.PSQLFriendly,v.Local.sPrimaryAddress2.PSQLFriendly,v.Local.sPrimaryCity.PSQLFriendly,v.Local.sPrimaryState.PSQLFriendly,v.Local.sPrimaryZip.PSQLFriendly,V.Local.sNamePrefix.PSQLFriendly,V.Local.sFirstName.PSQLFriendly,V.Local.sLastName.PSQLFriendly,V.Local.sPrimaryPhoneType.PSQLFriendly,v.Local.sSeq,v.Local.sType,v.Local.sSQL)
+								f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+								'Update custom DB
+								f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'Y',TransactionTypeProcessed = 'Update Contact', GSSCustProspReturned = '{0}', GSSContactIDReturned = '{1}',DateUploaded = '{2}',TimeUploaded = '{3}' where AutoID = '{4}'",v.Local.sCustomer,v.Local.sID,v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.Local.sAutoID,v.Local.sSQL)
+								f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+								'Display in Log
+								f.Intrinsic.String.Build("AutoID {0} ... Contact updated, {9} {10} with ID {11} for {8} {1} {2}, {3}, {4}, {5}, {6}, Phone: {7}",v.Local.sAutoID,v.Local.sCustomer,v.Local.sContactName,v.Local.sPrimaryAddress1,v.Local.sPrimaryCity,v.Local.sPrimaryState,v.Local.sPrimaryZip,v.Local.sPrimaryPhoneNumber,v.Local.sCustomerProspectFlag,v.Local.sCustomerProspectFlag,v.Local.sCustomer,v.Local.sID,v.Local.sHold)
+								f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)
+							
+							f.Intrinsic.Control.Next(v.Local.i2nd)						
+							'---END CASE 2.1.2.2.1---
+	
+						f.Intrinsic.Control.Else
+						'No Contact ID to update
+							'f.Intrinsic.ui.Msgbox("---CASE 2.2.2.2---")
+						
+							'---CASE 2.1.2.2.2---
+							f.Intrinsic.String.Build("No Contact ID {0} exists for GSSCustProspReturned {1} that Sugar Dev populated",v.Local.sGSSContactIDPopulated,v.Local.sGSSCustProspPopulated,v.Local.sReason)
+							f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'N',Reason = '{3}',TransactionTypeProcessed = 'Update Contact', DateUploaded = '{0}',TimeUploaded = '{1}' where AutoID = '{2}'",v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sReason,v.Local.sSQL)
+							f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+							
+							'Display in Log
+							f.Intrinsic.String.Build("AutoID {0} ... {1} - for update",v.DataTable.Contacts(v.Local.iCnt).AutoID!FieldValString,v.Local.sReason,v.Local.sHold)
+							f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)
+							'---END CASE 2.1.2.2.2---
+							
+						f.Intrinsic.Control.EndIf				
+						'---END CASE 2.1.2.2---
+						
+					f.Intrinsic.Control.EndIf
+				
+				
+				
+				F.Intrinsic.Control.EndIf				
+				'''END CODE ADDED				
+				'---END CASE 2.1---
+
+			'Sugar dev does not populate the GSSCustProspReturned
+			f.Intrinsic.Control.Else
+				v.Local.sCustomer.Set("")	
+				v.Local.sCustProsp.set("")
+				v.Local.sCustomerProspectFlag.Set("")
+				'f.Intrinsic.ui.Msgbox("---CASE 2.2---")
+		
+				'---CASE 2.2---
+				'Check from customer if there is a customer with External_ID = ExternalCustProspID
+				f.Intrinsic.String.Build("Select Top 1 Customer from v_cust_form_info where External_id = '{0}'",v.DataTable.Contacts(v.Local.iCnt).ExternalCustProspID!FieldValTrim,v.Local.sSQL)
+				f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+				f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF.Not)
+					v.Local.sCustomer.Set(v.Local.sRet)
+					v.Local.sCustProsp.Set("C")
+					v.Local.sCustomerProspectFlag.Set("Customer")
+				f.Intrinsic.Control.else
+		
+					f.Intrinsic.String.Build("Select Top 1 Prospect from v_Prospect_Aux where External_id = '{0}'",v.DataTable.Contacts(v.Local.iCnt).ExternalCustProspID!FieldValTrim,v.Local.sSQL)
+					f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)	
+					f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF.Not)
+						v.Local.sCustomer.Set(v.Local.sRet)
+						v.Local.sCustProsp.Set("P")
+						v.Local.sCustomerProspectFlag.Set("Prospect")
+					f.Intrinsic.Control.Else
+						v.Local.sCustomer.Set("")
+						v.Local.sCustProsp.Set("")
+						v.Local.sCustomerProspectFlag.Set("")
+					f.Intrinsic.Control.EndIf
+		
+				f.Intrinsic.Control.EndIf			
+				
+				
+				'Customer/Prospect exists with this ExternalCustProspID, get customer number, check Contact.User_1 = ExternalContactNum
+				f.Intrinsic.Control.If(v.Local.sCustomer,<>,"")
+					
+					'---CASE 2.2.1---
+					'f.Intrinsic.ui.Msgbox("---CASE 2.2.1---")
+				
+					'====================Related to Customer=============================
+					f.Intrinsic.String.Build("Select Top 1 Cust,Type,ID,Seq,User_1 from Contact where Cust = '{0}' and User_1 = '{1}'",v.Local.sCustomer,v.Local.sUser_1,v.Local.sSQL)
+					f.Intrinsic.Control.If(v.DataTable.Temp.Exists)
+						f.Data.DataTable.Close("Temp")
+					f.Intrinsic.Control.EndIf
+					f.Data.DataTable.CreateFromSQL("Temp","conx",v.Local.sSQL,True)
+					
+					'if false, no contact exist, create new contact
+					f.Intrinsic.Control.If(v.DataTable.Temp.RowCount,=,0)
+						'---CASE 2.2.1.1---
+						'f.Intrinsic.ui.Msgbox("---CASE 2.2.1.1---")
+						'Get the next seq
+						f.Intrinsic.String.Build("Select top 1 Seq from Contact where Cust = '{0}' and Type = '{1}' order by Seq desc",v.Local.sCustomer,v.Local.sCustProsp,v.Local.sSQL)
+						f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+						f.Intrinsic.Control.If(v.Ambient.ExecuteAndReturnEOF.Not)
+							f.Intrinsic.Math.Add(v.Local.sRet,1,v.Local.sRet)
+							f.Intrinsic.String.LPad(v.Local.sRet,"0",2,v.Local.sSeq)
+						f.Intrinsic.Control.Else
+							v.Local.sSeq.Set("00")
+						f.Intrinsic.Control.EndIf
+					
+						'create new contact with this customer ID
+						f.Data.DataTable.DeleteRow("NewContactUpl",-1)
+						f.Data.DataTable.AcceptChanges("NewContactUpl")
+						f.Data.DataTable.AddRow("NewContactUpl","CustProsp",v.Local.sCustomer,"ContactType",v.Local.sCustProsp,"ContactName",v.Local.sContactName,"Sequence",v.Local.sSeq,"NamePrefix",v.Local.sNamePrefix,"FirstName",v.Local.sFirstName,"LastName",v.Local.sLastName,"PreferredName",v.Local.sPreferredName,"PrimaryPhoneType",v.Local.sPrimaryPhoneType,"PrimaryPhoneNumber",v.Local.sPrimaryPhoneNumber,"PrimaryPhoneExtension",v.Local.sPrimaryPhoneExtension,"Email",v.Local.sEmail,"PrimaryAddress1",v.Local.sPrimaryAddress1,"PrimaryAddress2",v.Local.sPrimaryAddress2,"PrimaryCity",v.Local.sPrimaryCity,"PrimaryState",v.Local.sPrimaryState,"PrimaryZip",v.Local.sPrimaryZip,"PrimaryAddressCountry",v.Local.sPrimaryAddressCountry,"User1",v.Local.sUser_1)
+						
+						f.Intrinsic.Control.CallSub("Create_New_Contact")
+						
+						'Check if successed ... Callwrapper does not save User1, so worked around by getting the latest record then update that record with User1
+						f.Intrinsic.String.Build("select Top 1 Cust,Type,ID,Seq from Contact where Last_Chg_pgm = 'UPLCNTCT' and Last_Chg_By = '{0}' and LAST_CHG_DATE = '{1}' and LAST_CHG_TIME >= '{2}' ORDER BY LAST_CHG_DATE DESC,LAST_CHG_TIME DESC",v.Caller.User,v.Global.sDateStartCallWrapper,v.Global.sTimeStartCallWrapper,v.Local.sSQL)
+						f.ODBC.Connection!conx.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+						f.Intrinsic.Control.If(v.Local.sRet,<>,"")
+							f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+							v.Local.sID.Set(v.Local.sRet(2))
+							f.Intrinsic.String.Build("Update Contact set User_1 = '{0}' where Cust = '{1}' and Type = '{2}' and ID = '{3}' and Seq = '{4}'",v.Local.sUser_1,v.Local.sCustomer,v.Local.sCustProsp,v.Local.sRet(2),v.Local.sRet(3),v.Local.sSQL)
+							f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+					
+							'Update custom DB						
+							f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'Y',TransactionTypeProcessed = 'New Contact', GSSCustProspReturned = '{0}', GSSContactIDReturned = '{1}',DateUploaded = '{2}',TimeUploaded = '{3}' where AutoID = '{4}'",v.Local.sCustomer,v.Local.sID,v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.Local.sAutoID,v.Local.sSQL)
+							f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+							
+							'Display in Log
+							f.Intrinsic.String.Build("AutoID {0} ... Contact created and attached to {9} {10} with ID {11} for {8} {1} {2}, {3}, {4}, {5}, {6}, Phone: {7}",v.Local.sAutoID,v.Local.sCustomer,v.Local.sContactName,v.Local.sPrimaryAddress1,v.Local.sPrimaryCity,v.Local.sPrimaryState,v.Local.sPrimaryZip,v.Local.sPrimaryPhoneNumber,v.Local.sCustomerProspectFlag,v.Local.sCustomerProspectFlag,v.Local.sCustomer,v.Local.sid,v.Local.sHold)
+							f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)	
+						
+						f.Intrinsic.Control.Else						
+							
+							'Unsuccessful
+							f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'N',Reason = 'Callwrapper error', DateUploaded = '{0}',TimeUploaded = '{1}' where AutoID = '{2}'",v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.Local.sAutoID,v.Local.sSQL)
+							f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+							
+							'Display in Log
+							f.Intrinsic.String.Build("AutoID {0} ... Callwrapper ERROR when creating new contact for Customer {1} {2}, {3}, {4}, {5}, {6}, Phone: {7}",v.Local.sAutoID,v.Local.sCustomer,v.Local.sContactName,v.Local.sPrimaryAddress1,v.Local.sPrimaryCity,v.Local.sPrimaryState,v.Local.sPrimaryZip,v.Local.sPrimaryPhoneNumber,v.Local.sHold)
+							f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)
+							
+						f.Intrinsic.Control.EndIf
+					
+					'else, contact exists v.datatable.Temp.rowcount > 0, Update contact
+					f.Intrinsic.Control.Else
+						'---CASE 2.2.1.2---
+						'f.Intrinsic.ui.Msgbox("---CASE 2.2.1.2---")
+						'update contact
+						f.Intrinsic.Control.For(v.Local.i2nd,0,v.DataTable.Temp.RowCount--,1)
+							v.Local.sType.Set(v.DataTable.Temp(v.Local.i2nd).Type!FieldValString)
+							v.Local.sID.Set(v.DataTable.Temp(v.Local.i2nd).ID!FieldValString)
+							v.Local.sSeq.Set(v.DataTable.Temp(v.Local.i2nd).Seq!FieldValString)
+							
+							'Build SQL and update the contact of the customer
+							f.Intrinsic.String.Build("Update Contact Set NAME = '{3}',NAME_PREFERRED = '{4}',PHONE1 = '{5}',EXT1 = '{6}',EMAIL1 = '{7}',ADDRESS_1 = '{8}',ADDRESS_2 = '{9}',CITY = '{10}',STATE = '{11}',ZIP = '{12}',NAME_PREFIX = '{13}',NAME_FIRST = '{14}',NAME_LAST = '{15}',PHONE_T1 = '{16}' where Cust = '{0}' and ID = '{1}' and User_1 = '{2}' and Type = '{17}' and Seq = '{18}'",v.Local.sCustomer,v.Local.sID,v.Local.sUser_1,v.Local.sContactName.PSQLFriendly,v.Local.sPreferredName.PSQLFriendly,v.Local.sPrimaryPhoneNumber.PSQLFriendly,v.Local.sPrimaryPhoneExtension.PSQLFriendly,v.Local.sEmail.PSQLFriendly,v.Local.sPrimaryAddress1.PSQLFriendly,v.Local.sPrimaryAddress2.PSQLFriendly,v.Local.sPrimaryCity.PSQLFriendly,v.Local.sPrimaryState.PSQLFriendly,v.Local.sPrimaryZip.PSQLFriendly,V.Local.sNamePrefix.PSQLFriendly,V.Local.sFirstName.PSQLFriendly,V.Local.sLastName.PSQLFriendly,V.Local.sPrimaryPhoneType.PSQLFriendly,v.Local.sType,v.Local.sSeq,v.Local.sSQL)
+							f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+							'Update custom DB
+							f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set Processed = 1, Success = 'Y',TransactionTypeProcessed = 'Update Customer Contact', GSSCustProspReturned = '{0}', GSSContactIDReturned = '{1}',DateUploaded = '{2}',TimeUploaded = '{3}' where AutoID = '{4}'",v.Local.sCustomer,v.Local.sID,v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Now.FormatHHNNSS,v.Local.sAutoID,v.Local.sSQL)
+							f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+							'Display in Log
+							f.Intrinsic.String.Build("AutoID {0} ... Contact updated {8} {9} with ID {10} for {1} {2}, {3}, {4}, {5}, {6}, Phone: {7}",v.Local.sAutoID,v.Local.sCustomer,v.Local.sContactName,v.Local.sPrimaryAddress1,v.Local.sPrimaryCity,v.Local.sPrimaryState,v.Local.sPrimaryZip,v.Local.sPrimaryPhoneNumber,v.Local.sCustomerProspectFlag,v.Local.sCustomer,v.Local.sID,v.Local.sHold)
+							f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)
+						
+						f.Intrinsic.Control.Next(v.Local.i2nd)
+						
+					f.Intrinsic.Control.EndIf
+					'====================End Related to Customer=============================
+
+				'No customer/no prospect exists
+				f.Intrinsic.Control.Else
+					'---CASE 2.2.2---
+					'f.Intrinsic.ui.Msgbox("---CASE 2.2.2---")
+					'No customer exist, no prospect exist wait for customer/prospect created
+				
+					'Update custom DB
+					f.Intrinsic.String.Build("Update GCG_5625_Contact_Upl set TransactionTypeProcessed = 'Waiting Cust/Prosp created' where AutoID = '{0}'",v.Local.sAutoID,v.Local.sSQL)
+					f.ODBC.Connection!conx.Execute(v.Local.sSQL)
+					'Display in Log
+					f.Intrinsic.String.Build("AutoID {0} Waiting for Customer/Prospect created for contact {1}, {2}, {3}, {4}, {5}, Phone: {6}",v.Local.sAutoID,v.Local.sContactName,v.Local.sPrimaryAddress1,v.Local.sPrimaryCity,v.Local.sPrimaryState,v.Local.sPrimaryZip,v.Local.sPrimaryPhoneNumber,v.Local.sHold)
+					f.Intrinsic.Control.CallSub("Append_Transaction_Log","sNewLineTopAdded",v.Local.sHold)		
+	
+					
+				'Endif checking if cust/prospect exist	
+				f.Intrinsic.Control.EndIf
+			
+			'---CASE 2.3---not populated the GSSCustProspReturned
+				
+			
+				
+			'Endif prepopulated by Sugar dev for non deletion
+			f.Intrinsic.Control.endIf
+			
+		
+		'Endif Non deletion
+		f.Intrinsic.Control.EndIf
+	
+	'Loop records of the inbound Contacts
+	f.Intrinsic.Control.Next(v.Local.iCnt)
+
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.Process_Contact.End
+
+Program.Sub.Create_NewContactUpl.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	
+	'Create table structure
+	f.Intrinsic.Control.If(v.DataTable.NewContactUpl.Exists)
+		f.Data.DataTable.Close("NewContactUpl")
+	f.Intrinsic.Control.EndIf
+	f.Data.DataTable.CreateFromSQL("NewContactUpl","conx","Select AutoID,CustProsp,ContactType,ContactName,Sequence,NamePrefix,FirstName,MiddleInitial,LastName,Suffix,PreferredName,Birthday,AffiliationFlag,PrimaryPhoneType,PrimaryPhoneNumber,PrimaryPhoneExtension,SecondaryPhoneType,SecondaryPhoneNumber,SecondaryphoneExtension,Email,PrimaryAddressFlag,PrimaryAddress1,PrimaryAddress2,PrimaryCity,PrimaryState,PrimaryZip,SecondaryAddressDesc,SecondaryAddress1,SecondaryAddress2,SecondaryCity,SecondaryState,SecondaryZip,AdditionalPhone1Type,AdditionalPhone1Number,AdditionalPhone1Ext,AdditionalPhone2Type,AdditionalPhone2Number,AdditionalPhone2Ext,SecondaryEmail,SpouseName,JobTitle,JobFunction,JobManagerName,JobAssistantManagerName,ShipTo,PrimaryShipToFlag,PrimaryAddress3,PrimaryAddress4,PrimaryAddress5,PrimaryAddressCountry,ShipToAddress3,ShipToAddress4,ShipToAddress5,ShipToAddressCountry,Intercept,User1,User2,User3,User4,User5,User6,User7,User8,User9,User10,User11,User12,User13,User14,User15,User16,PrimaryContact from GCG_5625_Contact_Str",True)
+	f.Data.DataTable.DeleteRow("NewContactUpl",-1)
+	f.Data.DataTable.AcceptChanges("NewContactUpl")
+	f.Data.DataView.Create("NewContactUpl","dvNewContactUpl")	
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.Create_NewContactUpl.End
+
+Program.Sub.Create_New_Contact.Start
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	v.Local.sContacts.Declare
+	v.Local.sTemp.Declare
+	v.Local.iLengthArrayADD.Declare
+	v.Local.sRet.Declare
+	v.Local.sFile.Declare
+	v.Local.bEx.Declare
+	v.Local.sParams.Declare
+	v.Local.iCnt.Declare
+	v.Local.sCustomer.Declare
+	v.Local.sSQL.Declare
+	v.Local.sOutputContact.Declare
+	v.Local.sCol.Declare
+	v.Local.sHold.Declare
+	v.Local.sLine.Declare
+	v.Local.sLen.Declare
+	
+	f.Data.DataView.ToString("NewContactUpl","dvNewContactUpl","CustProsp*!*ContactType*!*ContactName*!*Sequence*!*NamePrefix*!*FirstName*!*MiddleInitial*!*LastName*!*Suffix*!*PreferredName*!*Birthday*!*AffiliationFlag*!*PrimaryPhoneType*!*PrimaryPhoneNumber*!*PrimaryPhoneExtension*!*SecondaryPhoneType*!*SecondaryPhoneNumber*!*SecondaryphoneExtension*!*Email*!*PrimaryAddressFlag*!*PrimaryAddress1*!*PrimaryAddress2*!*PrimaryCity*!*PrimaryState*!*PrimaryZip*!*SecondaryAddressDesc*!*SecondaryAddress1*!*SecondaryAddress2*!*SecondaryCity*!*SecondaryState*!*SecondaryZip*!*AdditionalPhone1Type*!*AdditionalPhone1Number*!*AdditionalPhone1Ext*!*AdditionalPhone2Type*!*AdditionalPhone2Number*!*AdditionalPhone2Ext*!*SecondaryEmail*!*SpouseName*!*JobTitle*!*JobFunction*!*JobManagerName*!*JobAssistantManagerName*!*ShipTo*!*PrimaryShipToFlag*!*PrimaryAddress3*!*PrimaryAddress4*!*PrimaryAddress5*!*PrimaryAddressCountry*!*ShipToAddress3*!*ShipToAddress4*!*ShipToAddress5*!*ShipToAddressCountry*!*Intercept*!*User1*!*User2*!*User3*!*User4*!*User5*!*User6*!*User7*!*User8*!*User9*!*User10*!*User11*!*User12*!*User13*!*User14*!*User15*!*User16*!*PrimaryContact","*!*","%#%",v.Local.sContacts)
+	
+	f.Intrinsic.String.Replace(v.Local.sContacts,v.Ambient.NewLine,"",v.Local.sContacts)
+	
+	F.Intrinsic.String.Split(V.Local.sContacts,"*!*",V.Local.sTemp)
+
+'	F.Intrinsic.String.Split("CustProsp*!*ContactType*!*ContactName*!*Sequence*!*NamePrefix*!*FirstName*!*MiddleInitial*!*LastName*!*Suffix*!*PreferredName*!*Birthday*!*AffiliationFlag*!*PrimaryPhoneType*!*PrimaryPhoneNumber*!*PrimaryPhoneExtension*!*SecondaryPhoneType*!*SecondaryPhoneNumber*!*SecondaryphoneExtension*!*Email*!*PrimaryAddressFlag*!*PrimaryAddress1*!*PrimaryAddress2*!*PrimaryCity*!*PrimaryState*!*PrimaryZip*!*SecondaryAddressDesc*!*SecondaryAddress1*!*SecondaryAddress2*!*SecondaryCity*!*SecondaryState*!*SecondaryZip*!*AdditionalPhone1Type*!*AdditionalPhone1Number*!*AdditionalPhone1Ext*!*AdditionalPhone2Type*!*AdditionalPhone2Number*!*AdditionalPhone2Ext*!*SecondaryEmail*!*SpouseName*!*JobTitle*!*JobFunction*!*JobManagerName*!*JobAssistantManagerName*!*ShipTo*!*PrimaryShipToFlag*!*PrimaryAddress3*!*PrimaryAddress4*!*PrimaryAddress5*!*PrimaryAddressCountry*!*ShipToAddress3*!*ShipToAddress4*!*ShipToAddress5*!*ShipToAddressCountry*!*Intercept*!*User1*!*User2*!*User3*!*User4*!*User5*!*User6*!*User7*!*User8*!*User9*!*User10*!*User11*!*User12*!*User13*!*User14*!*User15*!*User16*!*PrimaryContact","*!*",V.Local.sCol)
+	
+		
+	'Format string
+	F.Intrinsic.String.Split("6*!*1*!*30*!*2*!*1*!*25*!*1*!*25*!*1*!*30*!*10*!*1*!*1*!*20*!*5*!*1*!*20*!*5*!*100*!*1*!*50*!*50*!*15*!*10*!*15*!*30*!*50*!*50*!*15*!*10*!*15*!*1*!*20*!*5*!*1*!*20*!*5*!*100*!*50*!*50*!*50*!*50*!*50*!*6*!*1*!*50*!*50*!*50*!*12*!*50*!*50*!*50*!*12*!*1*!*30*!*30*!*30*!*30*!*30*!*30*!*30*!*30*!*30*!*30*!*30*!*30*!*30*!*30*!*30*!*30*!*1","*!*",V.Local.iLengthArrayADD)
+	
+'	f.Intrinsic.String.RPad(v.Local.sTemp(0)," ",6,v.Local.sLine)
+'	f.Intrinsic.Control.For(v.Local.iCnt,1,v.Local.sCol.UBound,1)
+'		f.Intrinsic.String.RPad(v.Local.sTemp(v.Local.iCnt)," ",v.Local.sLen(v.Local.iCnt),v.Local.sHold)
+'		f.Intrinsic.String.Build("{0}{1}",v.Local.sLine,v.Local.sHold,v.Local.sLine)	
+'	f.Intrinsic.Control.Next(v.Local.iCnt)
+'	v.Local.sOutputContact.Set(v.Local.sLine)
+	
+	F.Intrinsic.String.PositionalString(V.Local.sTemp,V.Local.iLengthArrayADD,V.Local.sOutputContact)
+	
+	f.Intrinsic.String.Split(v.Local.sOutputContact,v.Ambient.NewLine,v.Local.sOutputContact)
+	f.Intrinsic.String.Join(v.Local.sOutputContact,"",v.Local.sOutputContact)
+	
+	'Create contact.txt file
+	F.Intrinsic.String.Build("{0}\CONTACT.TXT",V.Caller.FilesDir,V.Local.sFile)
+	F.Intrinsic.File.Exists(V.Local.sFile,V.Local.bEx)
+	Function.Intrinsic.Control.If(V.Local.bEx)
+		F.Intrinsic.File.DeleteFile(V.Local.sFile)
+	Function.Intrinsic.Control.EndIf
+	F.Intrinsic.File.String2File(V.Local.sFile,V.Local.sOutputContact)
+	
+	
+	'Get time right before calling Callwrapper
+	f.Intrinsic.String.Build("{0}00",v.Ambient.Now.FormatHHNNSS,v.Global.sTimeStartCallWrapper)
+	f.Intrinsic.String.Format(v.Ambient.Date,"YYYYMMDD",v.Global.sDateStartCallWrapper)
+	
+	'Call callwrapper to create new contact
+	F.Intrinsic.String.Build("{0}!*!UPLCNTCT/U",V.Caller.CompanyCode,V.Local.sParams)
+	Function.Global.General.CallWrapperSync(51, V.Local.sParams)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: 5625 {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	f.Intrinsic.Control.CallSub("Write_GAB_Error_Log","sError",v.Local.sError)
+	f.Intrinsic.Control.CallSub("Unload")
+F.Intrinsic.Control.EndTry
+Program.Sub.Create_New_Contact.End
+
+
